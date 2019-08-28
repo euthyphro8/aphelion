@@ -1,0 +1,14 @@
+{
+  "name": "sandbox",
+  "version": "0.0.0",
+  "description": "Sandbox for webdev.",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "sandbox"
+  ],
+  "author": "Josh Hess",
+  "license": "ISC"
+}
