@@ -1,13 +1,18 @@
 {
     "window": {
         "fullscreen": false,
-        "devtools": false,
+        "devtools": true,
         "bounds":
         {
             "x": 100,
             "y": 100,
             "width": 640,
             "height": 480
+        },
+        "display": 
+        {
+            "custom": false,
+            "orderId": 0
         }
     }
 }

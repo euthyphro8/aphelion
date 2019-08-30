@@ -4,19 +4,14 @@ const { BrowserWindow } = require('electron');
 const { EventEmitter } = require('events');
 
 // Internal dependencies
-const { Logger } = require('@cgm/loggerutils');
+const Logger = require('./util/Logger');
 
 class Display extends EventEmitter {
 
-    constructor(config, display){
+    constructor(config){
         super();
         this.config = config;
         this.window = null;
-        
-        if(!config.window.fullscreen) {
-            display.bounds.width = config.window.width;
-            display.bounds.height = config.window.height;
-        }
 
         this.windowOptions = {
             title: 'Sandbox',
@@ -37,21 +32,21 @@ class Display extends EventEmitter {
                 nodeIntegrationInWorker: true
             }
         };
-        this.createWindow(display);
+        this.createWindow();
     }
 
 //#region [green] Window Functions
-    createWindow(display) {
+    createWindow() {
         // Create the Window
         this.window = new BrowserWindow(this.windowOptions);
-        this.window.setBounds({ x: display.bounds.x, y: display.bounds.y, 
-            width: display.bounds.width, height: display.bounds.height });
+        // this.window.setBounds({ x: display.bounds.x, y: display.bounds.y, 
+        //     width: display.bounds.width, height: display.bounds.height });
 
         // Add event listeners
         this.window.webContents.on('did-finish-load', this.onDidFinishLoad.bind(this));
         this.window.on('closed', this.close.bind(this));
         
-        if(this.config.debug.devtools)
+        if(this.config.window.devtools)
             this.window.webContents.openDevTools( { mode: 'undocked'} );
 
         // Begin loading the window content
@@ -89,4 +84,4 @@ class Display extends EventEmitter {
     
 }
 
-exports.Display = Display;
+module.exports = Display;

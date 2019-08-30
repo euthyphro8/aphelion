@@ -18,7 +18,7 @@ let logger = null;
 let monitor = null;
 
 // Can be overidden with cli arg config=[PATH_TO_SETTINGS]
-let configPath = `.\\Sandbox.json`;
+let configPath = `.\\config.json`;
 
 //App configuration
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
@@ -33,13 +33,13 @@ app.on('gpu-process-crashed', onGoingDown);
 function onReady() {
     loadArgs();
     loadConfig();
-    loadDisplay();
+    // loadDisplay();
     
     logger = new Logger();
     
     setTimeout(() => {
         printInfo();
-        display = new Display(config, monitor);
+        display = new Display(config);
         display.on('closed', onGoingDown);
     }, 500);
 }
@@ -84,10 +84,9 @@ function loadConfig() {
 function loadDisplay() {
     let useCustom =  config.window.display.custom;
     let orderId = config.window.display.orderId;
-    let displays = electron.screen.getAllDisplays();
     monitor = !useCustom || orderId >= displays.length || orderId < 0 ? 
         electron.screen.getPrimaryDisplay() : 
-        displays[orderId];
+        electron.screen.getAllDisplays()[orderId];
 }
 
 

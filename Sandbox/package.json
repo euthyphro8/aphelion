@@ -2,13 +2,20 @@
   "name": "sandbox",
   "version": "0.0.0",
   "description": "Sandbox for webdev.",
-  "main": "main.js",
+  "author": "Josh Hess",
+  "license": "ISC",
+  "main": "js/main.js",
   "scripts": {
+    "start": "electron .",
     "test": "jest"
   },
   "keywords": [
     "sandbox"
   ],
-  "author": "Josh Hess",
-  "license": "ISC"
+  "devDependencies": {
+    "electron": "^6.0.6"
+  },
+  "dependencies": {
+    "fs": "0.0.1-security"
+  }
 }

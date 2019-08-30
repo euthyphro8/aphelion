@@ -33,4 +33,4 @@ class FpsCounter {
     }
 }
 
-exports.FpsCounter = FpsCounter;
+module.exports = FpsCounter;
