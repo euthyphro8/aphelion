@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "description": "Web server for sandbox application.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "Josh Hess",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0",
+    "typescript": "^3.6.2",
+    "mongodb": "^3.3.2"
+  },
+  "devDependencies": {
+    "jshint": "^2.10.2",
+    "eslint": "^6.3.0"
+  }
+}

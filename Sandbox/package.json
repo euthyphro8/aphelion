@@ -12,10 +12,13 @@
   "keywords": [
     "sandbox"
   ],
-  "devDependencies": {
-    "electron": "^6.0.6"
-  },
   "dependencies": {
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "socket.io-client": "^2.2.0"
+  },
+  "devDependencies": {
+    "electron": "^6.0.6",
+    "jshint": "^2.10.2",
+    "eslint": "^6.3.0"
   }
 }

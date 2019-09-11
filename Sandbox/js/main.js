@@ -47,7 +47,6 @@ function onReady() {
 function onGoingDown(event) {
     Logger.warn(`Got event ${event.type}. Cleaning up and going Down.`);
     if(logger) {
-        logger.close();
         logger = null;
     }
     if(display && event.type !== 'PrimaryWindowClosed') {
