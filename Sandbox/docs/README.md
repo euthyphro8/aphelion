@@ -1,22 +1,27 @@
 # Project Proposal
-Josh Hess 
+Josh Hess - https://github.com/euthyphro666/CS4350/tree/master/Sandbox/docs
 ## *1.0 Overview*
-	The web app I have chosen to make is a game. The details of the game itself will come at a later time since the elements I will be primarily focused on have to do more with network synchronization, message encryption, secure information storage (for player statistics/high scores), and 
+
+The web app I have chosen to make is a game. The details of the game itself will come at a later time since the elements I will be primarily focused on have to do more with network synchronization, message encryption, secure information storage (for player statistics/high scores), and 
 
 ### *1.1 Web Server*
-	The web server will a simple nodejs server behind an nginx server for security and will be responsible for accepting secure & certified client connections, securely serving all statistics requested by any client, and being an authority physics engine for all clients.
+
+The web server will a simple nodejs server behind an nginx server for security and will be responsible for accepting secure & certified client connections, securely serving all statistics requested by any client, and being an authority physics engine for all clients.
 
 ### *1.2 Core App*
-	The core application will take on two faces, one bundled with electron, and one hosted by the server for browser access. Each version of the application should be roughly identical, and will entail a login page, register page, statistics/user history page, settings page, and finally a game page.
+
+The core application will take on two faces, one bundled with electron, and one hosted by the server for browser access. Each version of the application should be roughly identical, and will entail a login page, register page, statistics/user history page, settings page, and finally a game page.
 
 ### *1.3 Database*
-	The database will be configured for local connections only, meaning any information from it has to be obtained from the web server. The database will run with mongodb (postgresql as a fallback). The database will contain login credentials, user visit statistics, as well as any in game information that comes up (possibly save data & high scores).
+
+The database will be configured for local connections only, meaning any information from it has to be obtained from the web server. The database will run with mongodb (postgresql as a fallback). The database will contain login credentials, user visit statistics, as well as any in game information that comes up (possibly save data & high scores).
 
 ## *2.0 Milestones*
 
 The milestones are laid out in 10 distinct milestones that will be tracked using GitHub’s projects & issue tracker.
 
 ## *2.1 Login*
+
 The first milestone will simply be a functional login page/registration page. This will require a connection to the server, the login page UI, a database to store credentials, and a process of hashing, and a landing page for after successful login/registration.
 
 ## *More to Come..*
