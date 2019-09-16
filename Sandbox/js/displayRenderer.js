@@ -2,10 +2,10 @@
 // External Dependencies
 const fs = require('fs');
 const { ipcRenderer: ipc } = require('electron');
-const RLogger = require('../js/util/RLogger');
+const { remote } = require('electron')
 
 // Internal Dependencies
-const Logger = require('../js/ui/LoginPage');
+const RLogger = require('../js/util/RLogger');
 
 // Event listening
 ipc.on('start', onStart);
@@ -20,7 +20,23 @@ let login = null;
 // Renderer entrypoint
 async function onStart(event, contents) {
     login = new LoginPage(document);
+    
 }
+
+
+function onLoadPage(page) {
+    switch(page) {
+        case 'login':
+            remote.getCurrentWindow().loadURL('./');
+            break;
+        case 'stats':
+            break;
+        case 'game':
+            break;                  
+    }
+
+}
+
 
 function onBeforeUnload() {
     

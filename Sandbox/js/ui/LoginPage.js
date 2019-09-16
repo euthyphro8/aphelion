@@ -1,8 +1,9 @@
 
 // External Dependencies
-const RLogger = require('../js/util/RLogger');
 
 // Internal Dependencies
+const RLogger = require('../util/RLogger');
+const Validator = require('../util/Validator');
 
 
 class LoginPage {
@@ -34,12 +35,12 @@ class LoginPage {
 
     onKeyUp(event) {
         if(event.keycode === 'enter') {
-
+            this.validateLogin(null, null);
         }
     }
 
     async validateLogin(email, password) {
-        
+
     }
 
     async validateRegister(name, email, password) {

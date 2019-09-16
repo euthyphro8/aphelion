@@ -1,0 +1,76 @@
+:root {
+    --color-one: #E5C2C0;
+    --color-two: #8FD5A6;
+    --color-three: #329F5B;
+    --color-four: #0C8346;
+    --color-five: #0D5D56;
+}
+
+
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas: 
+        "nav nav"
+        "title info"
+        "menu info"; 
+        
+    grid-template-rows: 1fr 4fr 15fr;
+    grid-template-columns: 8fr 2fr;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 800px) {
+    .grid-container {
+        display: grid;
+        grid-template-areas: 
+            "nav"
+            "info"
+            "title"
+            "menu";
+            
+        grid-template-rows: 1fr  4fr 4fr 15fr;
+        grid-template-columns: 1fr;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+.grid-container > .nav {
+    grid-area: nav;
+    background-color: var(--color-one);
+    width: 100%;
+    transition-duration: 0.5s;
+}
+
+.grid-container > .nav:hover {
+    background-color: var(--color-three);
+}
+
+.grid-container > .title {
+    grid-area: title;
+    background-color: var(--color-two);
+    width: 100%;
+    
+}
+
+.grid-container > .menu {
+    grid-area: menu;
+    background-color: var(--color-four);
+    width: 100%;
+
+}
+
+.grid-container > .info {
+    grid-area: info;
+    background-color: var(--color-three);
+    width: 100%;
+}
