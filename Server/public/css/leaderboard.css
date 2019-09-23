@@ -1,0 +1,57 @@
+:root {
+    --color-one: #E5C2C0;
+    --color-two: #8FD5A6;
+    --color-three: #329F5B;
+    --color-four: #0C8346;
+    --color-five: #0D5D56;
+}
+
+
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas: 
+        "splash content";
+        
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 800px) {
+    .grid-container {
+        display: grid;
+        grid-template-areas: 
+            "content content";
+            
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+.grid-container > .splash {
+    grid-area: splash;
+    background-color: var(--color-two);
+    width: 100%;
+    height: 100%;
+    
+}
+
+.grid-container > .content {
+    grid-area: content;
+    background-color: var(--color-four);
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+}

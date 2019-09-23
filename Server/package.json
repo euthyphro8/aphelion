@@ -19,7 +19,8 @@
     "typescript": "^3.6.2"
   },
   "devDependencies": {
+    "eslint": "^6.3.0",
     "jshint": "^2.10.2",
-    "eslint": "^6.3.0"
+    "tslint": "^5.20.0"
   }
 }
