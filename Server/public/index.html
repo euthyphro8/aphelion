@@ -2,11 +2,49 @@
     <head>
         <meta charset="UTF-8">
         <title>Home</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" media="screen" href="./css/home.css">
     </head>
     <body>
-        <p>[Game Title Here]</p>
+        <script type="text/template" id="table-template">
+            <tr>
+                <td>{{id}}</td>
+                <td>{{name}}</td>
+                <td>{{username}}</td>
+                <td>{{email}}</td>
+                <td>{{address}}</td>
+                <td>{{phone}}</td>
+                <td>https://{{website}}</td>
+                <td>{{company}}</td>
+                <td><img src="{{avatar}}"></td>
+            </tr>
+        </script>
+        <div class="container-fluid">
+            <br>
+            <button id="populate" class="btn btn-primary">Populate Data</button>
+            <br>
+            <br>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Address</th>
+                        <th class="text-center">Phone</th>
+                        <th class="text-center">Website</th>
+                        <th class="text-center">Company</th>
+                        <th class="text-center">Avatar</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+        <!-- <p>[Game Title Here]</p>
         <p>Josh Hess</p>
-        <p>Copyright 2019, all rights reserved.</p>
+        <p>Copyright 2019, all rights reserved.</p> -->
     </body>
+    <!-- <script src="../ts/bootloader.ts"></script> -->
+    <script src="./build/public/ts/index.js"></script>
 </html>
