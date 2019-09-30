@@ -1,10 +1,14 @@
 <template>
-  
+    <div>
+        <canvas></canvas>
+    </div>
 </template>
 
 <script>
-export default {
 
+
+export default {
+    name: "Parallax"
 }
 </script>
 
