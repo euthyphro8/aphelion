@@ -1,14 +1,20 @@
 <template>
     <div>
-        <canvas></canvas>
+        <canvas ref="canvas"></canvas>
     </div>
 </template>
 
 <script>
-
+import ParallaxRenderer from './ParallaxRenderer';
 
 export default {
-    name: "Parallax"
+    name: "Parallax",
+    created() {
+        requestAnimationFrame(this.onDraw.bind(this));
+    },
+    methods: {
+
+    }
 }
 </script>
 

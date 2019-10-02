@@ -10,9 +10,9 @@ let starColor = '#FFFFFF';
 
 /**
  * By always scaling to the larger dimension, we get more perceived 
- * variance since there, is usally a margin of stars off screen. 
+ * variance since there, is usually a margin of stars off screen. 
  * Also they both move at the larger dimensions speed, being faster,
- * as it covers more ground in the same timespan.
+ * as it covers more ground in the same time span.
  * 
  * @param {CanvasRenderingContext2D} ctx 
  * @param {Number} time 
@@ -42,7 +42,7 @@ function onDraw(ctx, time) {
 /**
  * Here we simply calculate the angle between the center of the canvas, 
  * and the new mouse position.
- * Note: Definitly could use performance optimizations as this
+ * Note: Definitely could use performance optimizations as this
  * doesn't need to happen every mouse move event.
  * @param {CanvasRenderingContext2D} ctx 
  * @param {Event} event 
@@ -58,7 +58,7 @@ function onMouseMove(ctx, event) {
 /**
  * Whenever the document resizes we need to rescale the resolution of 
  * the canvas to match. 
- * Note: Definitly could use performance optimizations as this
+ * Note: Definitely could use performance optimizations as this
  * doesn't need to happen every resize event.
  * @param {CanvasRenderingContext2D} ctx 
  * @param {Event} event 
