@@ -17,7 +17,7 @@ let display = null;
 let logger = null;
 let monitor = null;
 
-// Can be overidden with cli arg config=[PATH_TO_SETTINGS]
+// Can be overridden with cli arg config=[PATH_TO_SETTINGS]
 let configPath = `.\\config.json`;
 
 //App configuration
@@ -29,7 +29,7 @@ app.on('will-quit', onGoingDown);
 app.on('window-all-closed', onGoingDown);
 app.on('gpu-process-crashed', onGoingDown);
 
-// Program entrypoint
+// Program entry point
 function onReady() {
     loadArgs();
     loadConfig();

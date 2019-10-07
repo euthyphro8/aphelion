@@ -1,19 +1,8 @@
 <template>
   <div id="app">
-    <Leaderboard />
+    <router-view/>
   </div>
 </template>
-
-<script>
-import Leaderboard from './components/views/Leaderboard'
-
-export default {
-  name: 'app',
-  components: {
-    Leaderboard
-  }
-}
-</script>
 
 <style>
 * {

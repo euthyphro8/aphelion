@@ -24,8 +24,8 @@ export default {
     height: 100%;
 }
 
-    @media only screen and (max-width: 600px) {
-        .grid-container {
+@media only screen and (max-width: 600px) {
+    .grid-container {
         display: grid;
         grid-template-areas: 
             "left"

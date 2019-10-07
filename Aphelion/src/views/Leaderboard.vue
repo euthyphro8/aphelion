@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import Board from '../layout/leaderboard/Board';
+import Board from '../components/layout/leaderboard/Board';
 
 export default {
-    name: "Leaderboard",
+    name: 'leaderboard',
     components: {
         Board
     },
