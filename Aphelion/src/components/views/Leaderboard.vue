@@ -1,6 +1,8 @@
 <template>
   <div class="grid-container">
-      <div class="left"></div>
+      <div class="left">
+          <Parallax />
+      </div>
       <div class="right">
           <Board v-bind:entries="entries"/>
       </div>
@@ -8,12 +10,14 @@
 </template>
 
 <script>
-import Board from '../components/layout/leaderboard/Board';
+import Board from '@/components/layout/leaderboard/Board';
+import Parallax from '@/components/Parallax';
 
 export default {
     name: 'leaderboard',
     components: {
-        Board
+        Board,
+        Parallax
     },
     data() {
         return {
@@ -35,7 +39,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped >
 
 .grid-container {
     display: grid;
@@ -48,8 +52,8 @@ export default {
     height: 100%;
 }
 
-    @media only screen and (max-width: 600px) {
-        .grid-container {
+@media only screen and (max-width: 600px) {
+    .grid-container {
         display: grid;
         grid-template-areas: 
             "left"

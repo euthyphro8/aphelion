@@ -1,16 +1,18 @@
 <template>
-    <div>
-        <canvas ref="canvas"></canvas>
+    <div class="container">
+        <canvas ref="parallax-canvas"></canvas>
     </div>
 </template>
 
 <script>
-import ParallaxRenderer from './ParallaxRenderer';
+import ParallaxRenderer from '@/ts/graphics/ParallaxRenderer';
 
 export default {
     name: "Parallax",
-    created() {
-        requestAnimationFrame(this.onDraw.bind(this));
+    mounted() {
+        let ctx = this.$refs['parallax-canvas'].getContext('2d');
+        this.par = new ParallaxRenderer(ctx);
+        this.par.start();
     },
     methods: {
 
@@ -18,6 +20,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
 
 </style>

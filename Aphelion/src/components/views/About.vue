@@ -1,18 +1,28 @@
 <template>
   <div class="grid-container">
-      <div class="left" v-html="left-content"></div>
-      <div class="right" v-html="right-content"></div>
+      <div class="left">
+          <Parallax />
+      </div>
+      <div class="right">
+      </div>
   </div>
 </template>
 
 <script>
+import Parallax from '@/components/Parallax';
+
 export default {
-    name: "TwoPanel",
-    props: ["left-content", "right-content"]
+    name: 'about',
+    components: {
+        Parallax
+    },
+    data() {
+        return {}
+    }
 }
 </script>
 
-<style>
+<style scoped>
 
 .grid-container {
     display: grid;

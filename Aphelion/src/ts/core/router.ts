@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import About from './views/About.vue';
-import Account from './views/Account.vue';
-import Game from './views/Game.vue';
-import Home from './views/Home.vue';
-import Leaderboard from './views/Leaderboard.vue';
-import Login from './views/Login.vue';
+import About from '@/components/views/About.vue';
+import Account from '@/components/views/Account.vue';
+import Game from '@/components/views/Game.vue';
+import Home from '@/components/views/Home.vue';
+import Leaderboard from '@/components/views/Leaderboard.vue';
+import Login from '@/components/views/Login.vue';
 
 
 Vue.use(Router);
@@ -16,7 +16,7 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component: About
+      component: About,
     },
     {
       path: '/account',

@@ -1,7 +1,7 @@
 <template>
-  <header class="header">
-      <h1>{{title}}</h1>
-  </header>
+    <div class="title">
+        {{title}}
+    </div>
 </template>
 
 <script>
@@ -12,15 +12,11 @@ export default {
 </script>
 
 <style scoped>
-    .header {
-        background: #151D29;
-        color: #0C8346;
+    .title {
+        font-size: 6vmin;
+        font-weight: 600;
+        width: 100%;
         text-align: center;
-        padding: 10px;
-    }
-
-    .header a {
-        color: #35495E;
-        padding-right: 5px;
+        color: #151D29;
     }
 </style>

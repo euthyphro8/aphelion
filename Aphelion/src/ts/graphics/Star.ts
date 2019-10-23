@@ -4,10 +4,10 @@ class Star {
     y: number;
     speed: number;
 
-    constructor(x: number, y: number, speed: number) {
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
+    constructor() {
+        this.x = Math.random();
+        this.y = Math.random();
+        this.speed = (Math.random() * 0.002) + 0.0001;
     }
 
     offset(dx: number, dy: number) {

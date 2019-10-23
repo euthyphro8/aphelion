@@ -1,24 +1,33 @@
 <template>
   <div class="grid-container">
-      <div class="left" v-html="left-content"></div>
-      <div class="right" v-html="right-content"></div>
+      <div class="left">
+        <Menu />
+      </div>
+      <div class="right">
+        <Parallax />
+      </div>
   </div>
 </template>
 
 <script>
-export default {
-    name: "TwoPanel",
-    props: ["left-content", "right-content"]
-}
+  import Menu from "@/components/layout/home/Menu";
+  import Parallax from "@/components/Parallax";
+  
+  export default {
+    name: "Home",
+    components: {
+      Menu,
+      Parallax
+    }
+  }
 </script>
 
-<style>
+<style scoped>
 
 .grid-container {
     display: grid;
     grid-template-areas: 
         "left right";
-        
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     width: 100%;
@@ -40,14 +49,14 @@ export default {
 
     .left {
         grid-area: left;
-        background: #151D29;
+        background: #0C8346;
         width: 100%;
         height: 100%;
     }
 
     .right {
         grid-area: right;
-        background: #0C8346;
+        background: #151D29;
         width: 100%;
         height: 100%;
     }

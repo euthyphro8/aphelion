@@ -33,6 +33,10 @@ export default {
         align-items: center;
     }
 
+    .board-entry:hover {
+        background: #066333;
+    }
+
     .avatar {
         padding: 10px;
         flex-shrink: 1;
