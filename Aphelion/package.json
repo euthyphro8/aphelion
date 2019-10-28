@@ -17,6 +17,8 @@
     "typescript": "^3.6.4",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
+    "vue-cookie": "^1.1.4",
+    "vue-cookies-ts": "^1.5.19",
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"

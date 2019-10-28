@@ -5,6 +5,7 @@
       </div>
       <div class="right">
         <Parallax />
+        <img class="logo" src="@/assets/LogoGrey.png" alt="logo">
       </div>
   </div>
 </template>
@@ -59,6 +60,15 @@
         background: #151D29;
         width: 100%;
         height: 100%;
+    }
+
+    .logo {
+      position: absolute;
+      height: 50vh;
+      top: 25%;
+      width: 25%;
+      left: 62.5%;
+      /* left: 10px; */
     }
 
 </style>

@@ -21,7 +21,7 @@ class ParallaxRenderer {
         this.cx = Math.cos(Math.PI / 4);
         this.cy = Math.cos(Math.PI / 4);
 
-        this.initStars(350);
+        this.initStars(1000);
         this.onResized();
         this.registerEvents();
     }

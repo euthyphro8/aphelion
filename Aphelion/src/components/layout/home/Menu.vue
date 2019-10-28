@@ -1,5 +1,4 @@
 <template>
-  <div class="menu">
     <div class="menu-box">
         <div class="title">
             Game
@@ -25,7 +24,6 @@
             </div>
         </a>
     </div>
-  </div>
 </template>
 
 <script>
@@ -39,9 +37,8 @@ export default {
     .menu-box {
         width: 100%;
         height: 100%;
-        /* padding: 10% 2%; */
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         flex-wrap: nowrap;
         align-items: center;
         flex-direction: column;
@@ -50,6 +47,8 @@ export default {
     .menu-item {
         background: #0C8346;
         font-weight: bolder;
+        width: 100%;
+        height: 100%;
     }
     
     .menu-item:hover {
@@ -57,7 +56,10 @@ export default {
     }
 
     a {
-        text-decoration: none;        
+        text-decoration: none;   
+        width: 100%;
+        height: 100%; 
+        text-align: center;    
     }
 
     p {
@@ -72,5 +74,7 @@ export default {
         font-weight: 900;
         text-align: center;
         color: #cccccc;
+        width: 100%;
+        height: 100%;
     }
 </style>

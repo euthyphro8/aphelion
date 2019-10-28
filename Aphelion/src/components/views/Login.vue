@@ -2,7 +2,8 @@
 <div class="root">
   <Parallax class="background"/>
   <div class='box'>
-    <RegisterForm />
+    <RegisterForm id="register" v-bind:class="{'hidden':!isRegistering}" v-on:switch-form="switchForm"/>
+    <LoginForm id="login" v-bind:class="{'hidden':isRegistering}" v-on:switch-form="switchForm"/>
   </div>
 </div>
 </template>
@@ -10,12 +11,24 @@
 <script>
 import Parallax from '@/components/Parallax';
 import RegisterForm from '@/components/layout/login/RegisterForm';
+import LoginForm from '@/components/layout/login/LoginForm';
 
 export default {
     name: 'login',
     components: {
       Parallax,
-      RegisterForm
+      RegisterForm,
+      LoginForm
+    },
+    data() {
+        return {
+            isRegistering: false
+        }
+    },
+    methods: {
+        switchForm() {
+          this.isRegistering = !this.isRegistering;
+        }
     }
 }
 </script>
@@ -35,15 +48,23 @@ export default {
 }
 
 .box {
-  border-radius: 10px;
+  border-radius: 3px;
+  
+  backdrop-filter: blur(3px);
   font-family: "Roboto", sans-serif;   
   position: absolute;
   left: 30%;
-  top: 25%;
+  top: 20%;
   width: 40%;
-  height: 50%;
-  background: #F2F2F244;
+  height: 60%;
+  /* background: rgba(255, 255, 255, 0.3); */
   min-width: 166px;
+  min-height: 500px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.75);
+}
+
+.hidden {
+  display: none;
 }
 
 </style>

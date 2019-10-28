@@ -7,7 +7,7 @@ class Star {
     constructor() {
         this.x = Math.random();
         this.y = Math.random();
-        this.speed = (Math.random() * 0.002) + 0.0001;
+        this.speed = (Math.random() * 0.003) + 0.0001;
     }
 
     offset(dx: number, dy: number) {
@@ -19,7 +19,7 @@ class Star {
 
     render(context: CanvasRenderingContext2D, scale: number) {
         context.moveTo(this.x * scale, this.y * scale);
-        context.arc(this.x * scale, this.y * scale, 0.5 + (this.speed / 0.2), 0, 2 * Math.PI);
+        context.arc(this.x * scale, this.y * scale, 0.6 + (this.speed / 0.2), 0, 2 * Math.PI);
     }
 }
 

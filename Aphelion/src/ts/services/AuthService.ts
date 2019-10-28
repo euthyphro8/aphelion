@@ -1,4 +1,6 @@
 
+import Validator from "@/ts/util/Validator";
+
 class AuthService {
     
     // connection: ServerConnection;
@@ -8,12 +10,12 @@ class AuthService {
 
     }
 
-    registerCredentials() {//: Promise<AuthStatus> {
-
+    registerCredentials(username: string, email: string, password: string) {//: Promise<AuthStatus> {
+        return true;
     }
 
     authenticateCredentials() {// : Promise<AuthStatus> {
-        
+        console.log
     }
 
 
