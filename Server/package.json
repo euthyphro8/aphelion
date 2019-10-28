@@ -1,10 +1,14 @@
 {
   "name": "server",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Web server for sandbox application.",
-  "main": "src/main.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "jest"
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "server"
@@ -12,6 +16,8 @@
   "author": "Josh Hess",
   "license": "ISC",
   "dependencies": {
+    "@types/uuid": "^3.4.5",
+    "@types/winston": "^2.4.4",
     "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "mongodb": "^3.3.2",
@@ -19,6 +25,9 @@
     "typescript": "^3.6.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/node": "^12.11.7",
+    "@types/socket.io": "^2.1.4",
     "eslint": "^6.3.0",
     "jshint": "^2.10.2",
     "tslint": "^5.20.0"

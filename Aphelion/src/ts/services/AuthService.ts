@@ -10,16 +10,16 @@ class AuthService {
 
     }
 
-    registerCredentials(username: string, email: string, password: string) {//: Promise<AuthStatus> {
+    registerCredentials(username: string, email: string, password: string) : boolean {//: Promise<AuthStatus> {
         return true;
     }
 
-    authenticateCredentials() {// : Promise<AuthStatus> {
-        console.log
+    authenticateCredentials() : boolean {// : Promise<AuthStatus> {
+        return true;
     }
 
 
 
-};
+}
 
 export default AuthService;

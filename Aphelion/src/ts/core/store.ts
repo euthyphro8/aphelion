@@ -10,7 +10,7 @@ Vue.use(VueCookies);
 
 const loadedState = {
   authenticated: false
-};
+}
 
 console.log('Loading all cookies');
 if(Vue.cookies.isKey('AuthStatus')) {
