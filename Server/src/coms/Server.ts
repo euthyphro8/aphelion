@@ -17,7 +17,7 @@ class Server {
     private ioServer: io.Server;
     private port: string;
 
-    private sockets: io.Socket[];
+    private sockets: Map<string, io.Socket>;
 
     constructor() {
         this.port = process.env.PORT || '3000';
@@ -25,18 +25,22 @@ class Server {
         this.httpServer = http.createServer(this.expressApp);
         this.ioServer = io(this.httpServer);
 
-        this.sockets = [];
+        this.sockets = new Map<string, io.Socket>();
     }
 
     public start() {
         this.expressApp.use(express.static('public'));
         this.ioServer.on('connect', this.onConnection);
         this.httpServer.listen(this.port);
+
+        Logger.info(`Socket server started on port ${this.port}.`);
     }
 
-    private onConnection(socket: io.Socket, callback: () => void) {
+    private onConnection(socket: io.Socket) {
         Logger.info(`Socket connected from ${socket.conn.remoteAddress}.`);
-        uuid.v4();
+        const id = uuid.v4();
+        this.sockets.set(id, socket);
+        socket.emit('ID', id);
     }
 }
 
