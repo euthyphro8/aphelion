@@ -10,7 +10,7 @@ class AuthService {
 
     }
 
-    registerCredentials(username: string, email: string, password: string) : boolean {//: Promise<AuthStatus> {
+    registerCredentials(username: string, email: string, password: string): boolean {//: Promise<AuthStatus> {
         return true;
     }
 
