@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 // import uuid from 'uuid';
 
 // Internal Dependencies
-import Logger from '../utils/Logger';
+import Logger from './LoggerService';
 import IAuthResponse from '../interfaces/IAuthResponse';
 
 // Global Fields

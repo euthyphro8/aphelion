@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt';
 import AmbientContext from './AmbientContext';
 import IUserInfo from '@/interfaces/IUserInfo';
-import Logger from '@/utils/Logger';
+import Logger from '@/services/LoggerService';
 
 class CryptoService {
 

@@ -9,56 +9,38 @@ import winston from 'winston';
 
 type LogLevel = 'debug' | 'info' | 'notice' | 'warn' | 'error' | 'crit' | 'alert' | 'emerg';
 
-class Logger {
+class LoggerService {
 
-    public static Instance: Logger;
-
-    public static info(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('info', message);
-        }
+    public info(message: string): void {
+        this.log('info', message);
     }
 
-    public static debug(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('debug', message);
-        }
+    public debug(message: string): void {
+        this.log('debug', message);
     }
 
-    public static notice(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('notice', message);
-        }
+    public notice(message: string): void {
+        this.log('notice', message);
     }
 
-    public static warn(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('warn', message);
-        }
+    public warn(message: string): void {
+        this.log('warn', message);
     }
 
-    public static error(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('error', message);
-        }
+    public error(message: string): void {
+        this.log('error', message);
     }
 
-    public static crit(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('crit', message);
-        }
+    public crit(message: string): void {
+        this.log('crit', message);
     }
 
-    public static alert(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('alert', message);
-        }
+    public alert(message: string): void {
+        this.log('alert', message);
     }
 
-    public static emerg(message: string): void {
-        if (Logger.Instance) {
-            this.Instance.log('emerg', message);
-        }
+    public emerg(message: string): void {
+        this.log('emerg', message);
     }
 
     private logger: Winston.Logger;
@@ -145,7 +127,6 @@ class Logger {
             ]
         });
         this.logger.level = 'debug';
-        Logger.Instance = this;
     }
 
     private log(type: LogLevel, message: string): void {
@@ -153,4 +134,4 @@ class Logger {
     }
 }
 
-export default Logger;
+export default LoggerService;
