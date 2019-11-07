@@ -7,7 +7,7 @@ const CryptoService_1 = tslib_1.__importDefault(require("./services/CryptoServic
 const DatabaseService_1 = tslib_1.__importDefault(require("./services/DatabaseService"));
 const AmbientContext_1 = tslib_1.__importDefault(require("./services/AmbientContext"));
 const logger = new LoggerService_1.default('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 1);
-const dbCtx = new DatabaseService_1.default('mongodb://localhost:27017', 'aphelion', 'accounts');
+const dbCtx = new DatabaseService_1.default('mongodb://localhost:27017', 'local', 'accounts');
 const crypto = new CryptoService_1.default('96c551bd-2476-49bb-801b-15d53e629d1e');
 const server = new MessageService_1.default('3000', 'path');
 AmbientContext_1.default.LoggerProvider = logger;
@@ -28,14 +28,11 @@ logger.notice(`     _____         .__           .__  .__                 \n` +
     `Process ID:\t\t\t${process.pid}\n` +
     `----------------------------------------------------------`);
 dbCtx.connect().then(() => {
-    logger.alert(`Connection callback. Attempting an insert.`);
-    return dbCtx.addAccount({
-        username: 'name',
-        email: 'user@email.com',
-        password: 'password',
-        score: 0
-    });
+    logger.debug(`Connection callback. Attempting an insert.`);
+    return dbCtx.getAccount('name', false);
 }).then((result) => {
-    logger.alert(`Add callback. Insert status: ${result}.`);
+    logger.debug(`Add callback. Insert status: ${result.username}.`);
+}).catch((error) => {
+    logger.crit('There was an error starting the service.');
 });
 //# sourceMappingURL=main.js.map

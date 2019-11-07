@@ -9,7 +9,8 @@
     "prestart": "npm run build",
     "start": "node .",
     "test": "npx jest",
-    "hotload": "npx nodemon --watch src --ext vue,ts --exec npm start"
+    "hotload": "npx nodemon --watch src --ext vue,ts --exec npm start",
+    "jest": "NODE_ENV=test jest"
   },
   "keywords": [
     "server"
@@ -17,12 +18,11 @@
   "author": "Josh Hess",
   "license": "ISC",
   "dependencies": {
+    "babel-jest": "^24.9.0",
     "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "mongodb": "^3.3.3",
     "socket.io": "^2.2.0",
-    "typescript": "^3.6.2",
-    "uuid": "^3.3.3",
     "winston": "^3.2.1"
   },
   "devDependencies": {
@@ -32,12 +32,12 @@
     "@types/mongodb": "^3.3.8",
     "@types/node": "^12.11.7",
     "@types/socket.io": "^2.1.4",
-    "@types/uuid": "^3.4.5",
-    "@types/winston": "^2.4.4",
     "eslint": "^6.3.0",
+    "jest": "^24.9.0",
     "jshint": "^2.10.2",
     "nodemon": "^1.19.4",
     "ts-jest": "^24.1.0",
-    "tslint": "^5.20.0"
+    "tslint": "^5.20.0",
+    "typescript": "^3.7.2"
   }
 }

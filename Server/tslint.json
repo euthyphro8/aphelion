@@ -9,6 +9,7 @@
       "ordered-imports": false,
       "quotemark": [true, "single"],
       "object-literal-shorthand": false,
-      "align": false
+      "align": false,
+      "max-line-length": false
     }
   }

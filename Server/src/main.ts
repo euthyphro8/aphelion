@@ -4,10 +4,12 @@ import MessageService from './services/MessageService';
 import CryptoService from './services/CryptoService';
 import DatabaseService from './services/DatabaseService';
 import AmbientContext from './services/AmbientContext';
+import DatabaseReturnStatus from './utils/DatabaseReturnStatus';
+import IUserInfo from './interfaces/IUserInfo';
 
 // Initialization of all Micro Services
 const logger = new LoggerService('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 1);
-const dbCtx = new DatabaseService('mongodb://localhost:27017', 'aphelion', 'accounts');
+const dbCtx = new DatabaseService('mongodb://localhost:27017', 'local', 'accounts');
 const crypto = new CryptoService('96c551bd-2476-49bb-801b-15d53e629d1e');
 const server = new MessageService('3000', 'path');
 
@@ -35,15 +37,7 @@ logger.notice(
 // server.start();
 
 // Tests
-dbCtx.connect().then(() => {
-    logger.alert(`Connection callback. Attempting an insert.`);
-    return dbCtx.addAccount({
-        username: 'name',
-        email: 'user@email.com',
-        password: 'password',
-        score: 0
-    });
-}).then((result: boolean) => {
-    logger.alert(`Add callback. Insert status: ${result}.`);
-});
+
+
+// Tests
 

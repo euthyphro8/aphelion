@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const mongodb_1 = require("mongodb");
 const AmbientContext_1 = tslib_1.__importDefault(require("./AmbientContext"));
+const DatabaseReturnStatus_1 = tslib_1.__importDefault(require("./DatabaseReturnStatus"));
 class DatabaseService {
     constructor(url, database, collection) {
         this.dbUrl = url;
@@ -13,16 +14,16 @@ class DatabaseService {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 if (!this.client) {
-                    AmbientContext_1.default.LoggerProvider.debug('Connecting to database instance.');
+                    AmbientContext_1.default.LoggerProvider.info('Connecting to database instance.');
                     this.client = yield mongodb_1.MongoClient.connect(this.dbUrl, {
                         useNewUrlParser: true,
                         useUnifiedTopology: true
                     });
-                    AmbientContext_1.default.LoggerProvider.debug(`Connected. ${this.client}`);
+                    AmbientContext_1.default.LoggerProvider.info(`Connected to mongodb server.`);
                     this.database = this.client.db(this.dbName);
-                    AmbientContext_1.default.LoggerProvider.debug(`Got database. ${this.database}`);
+                    AmbientContext_1.default.LoggerProvider.info(`Got database instance.`);
                     this.collection = this.database.collection(this.colName);
-                    AmbientContext_1.default.LoggerProvider.debug(`Got collection. ${this.collection}`);
+                    AmbientContext_1.default.LoggerProvider.info(`Got collection instance.`);
                 }
             }
             catch (error) {
@@ -52,8 +53,8 @@ class DatabaseService {
                 });
             }
             catch (generalError) {
-                AmbientContext_1.default.LoggerProvider.alert(`There was a general error with the find. ${generalError}`);
-                reject(generalError.message || 'There was an unknown error.');
+                AmbientContext_1.default.LoggerProvider.alert(`There was a general error with the insert. ${generalError}`);
+                reject(generalError.message || 'There was an unknown error in the Database Service when retrieving an account.');
             }
         }));
     }
@@ -63,17 +64,27 @@ class DatabaseService {
                 yield this.connect();
             }
             try {
-                this.collection.insertOne([user], (insertError) => {
-                    if (insertError) {
-                        AmbientContext_1.default.LoggerProvider.alert(`There was an error with the insert. ${insertError}`);
-                        resolve(false);
-                    }
-                    resolve(true);
-                });
+                const usernameLookupQuery = yield this.collection.findOne({ username: user.username });
+                if (usernameLookupQuery) {
+                    AmbientContext_1.default.LoggerProvider.info(`Found account with same username ${usernameLookupQuery.username}`);
+                    resolve(DatabaseReturnStatus_1.default.UsernameTaken);
+                    return;
+                }
+                const emailLookupQuery = yield this.collection.findOne({ email: user.email });
+                if (emailLookupQuery) {
+                    AmbientContext_1.default.LoggerProvider.info(`Found account with same email ${emailLookupQuery.email}`);
+                    resolve(DatabaseReturnStatus_1.default.EmailTaken);
+                    return;
+                }
+                const insertResult = yield this.collection.insertOne(user);
+                if (insertResult.insertedCount === 1) {
+                    resolve(DatabaseReturnStatus_1.default.Success);
+                    return;
+                }
             }
             catch (generalError) {
                 AmbientContext_1.default.LoggerProvider.alert(`There was a general error with the insert. ${generalError}`);
-                reject(generalError.message || 'There was an unknown error.');
+                reject(generalError.message || 'There was an unknown error in the Database Service when adding an account.');
             }
         }));
     }
