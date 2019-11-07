@@ -36,6 +36,6 @@ dbCtx.connect().then(() => {
         score: 0
     });
 }).then((result) => {
-    logger.alert(`Add callback. Insert status: ${result}`);
+    logger.alert(`Add callback. Insert status: ${result}.`);
 });
 //# sourceMappingURL=main.js.map
