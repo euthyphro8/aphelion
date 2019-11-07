@@ -1,6 +1,5 @@
 
 import Winston from 'winston';
-import winston from 'winston';
 
 /**
  * Log levels in accordance with the Syslog Protocol
