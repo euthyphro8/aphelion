@@ -1,11 +1,11 @@
 <template>
-<div class="root">
-  <Parallax class="background"/>
-  <div class='box'>
-    <RegisterForm id="register" v-bind:class="{'hidden':!isRegistering}" v-on:switch-form="switchForm"/>
-    <LoginForm id="login" v-bind:class="{'hidden':isRegistering}" v-on:switch-form="switchForm"/>
+  <div class="root">
+    <Parallax class="background" />
+    <div class="box">
+      <RegisterForm id="register" :class="{'hidden':!isRegistering}" @switch-form="switchForm"/>
+      <LoginForm id="login" :class="{'hidden':isRegistering}" @switch-form="switchForm"/>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -14,7 +14,7 @@ import RegisterForm from '@/components/layout/login/RegisterForm';
 import LoginForm from '@/components/layout/login/LoginForm';
 
 export default {
-    name: 'login',
+    name: 'Login',
     components: {
       Parallax,
       RegisterForm,
@@ -23,14 +23,14 @@ export default {
     data() {
         return {
             isRegistering: false
-        }
+        };
     },
     methods: {
         switchForm() {
           this.isRegistering = !this.isRegistering;
         }
     }
-}
+};
 </script>
 
 <style scoped>

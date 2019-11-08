@@ -1,15 +1,22 @@
 <template>
   <div class="grid-container">
-      <div class="left" v-html="left-content"></div>
-      <div class="right" v-html="right-content"></div>
+    <div
+      class="left"
+      v-html="left-content"
+    />
+    <div
+      class="right"
+      v-html="right-content"
+    />
   </div>
 </template>
 
 <script>
+
 export default {
-    name: "TwoPanel",
-    props: ["left-content", "right-content"]
-}
+    name: 'TwoPanel',
+    props: ['leftContent', 'rightContent']
+};
 </script>
 
 <style>

@@ -25,10 +25,21 @@ class MessageService {
     public registerMessenger(clientId: string, messenger: io.Socket): void {
         this.messengers.set(clientId, messenger);
 
-        messenger.on(MessageTypes.LeaderboardRequest, this.onRequestLogin.bind(this));
-        messenger.on(MessageTypes.LeaderboardRequest, this.onRequestRegister.bind(this));
+        messenger.on(MessageTypes.LoginRequest, this.onRequestLogin.bind(this));
+        messenger.on(MessageTypes.RegisterRequest, this.onRequestRegister.bind(this));
         messenger.on(MessageTypes.AccountInfoRequest, this.onAccountInfoRequest.bind(this));
-        // messenger.on(MessageTypes.LeaderboardRequest, this.onLeaderBoardRequest.bind(this));
+        messenger.on(MessageTypes.LeaderboardRequest, this.onLeaderBoardRequest.bind(this));
+    }
+
+    public unregisterMessenger(clientId: string): void {
+        const messenger = this.messengers.get(clientId);
+        if (messenger) {
+            messenger.off(MessageTypes.LoginRequest, this.onRequestLogin.bind(this));
+            messenger.off(MessageTypes.RegisterRequest, this.onRequestRegister.bind(this));
+            messenger.off(MessageTypes.AccountInfoRequest, this.onAccountInfoRequest.bind(this));
+            messenger.off(MessageTypes.LeaderboardRequest, this.onLeaderBoardRequest.bind(this));
+            this.messengers.delete(clientId);
+        }
     }
 
     private async onRequestLogin(clientId: string, humanId: string, isEmail: boolean, password: string, callback: (response: boolean) => void): Promise<void> {
@@ -69,8 +80,18 @@ class MessageService {
         }
     }
 
-    // private onLeaderBoardRequest(clientId: string, callback: (entries: any) => void) {
-    // }
+    private async onLeaderBoardRequest(clientId: string, callback: (entries: any) => void): Promise<void> {
+        const user = this.authed.get(clientId);
+        if (user) {
+            const entries = await Context.DatabaseProvider.getAllAccounts();
+            if (entries) {
+                entries.forEach((entry) => delete entry.password);
+                callback(entries);
+                return;
+            }
+        }
+        callback(undefined);
+    }
 }
 
 export default MessageService;

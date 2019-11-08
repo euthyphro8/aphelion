@@ -36,7 +36,7 @@ export default new Router({
     {
       path: '/leaderboard',
       name: 'leaderboard',
-      component: Leaderboard 
+      component: Leaderboard
     },
     {
       path: '/login',

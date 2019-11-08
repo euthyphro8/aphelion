@@ -1,8 +1,15 @@
 <template>
   <div class="board-entry">
-      <img class="avatar" v-bind:src="'' + gravatar"/>
-      <p class="name">{{entry.username}}</p>
-      <p class="score">{{entry.score}}</p>
+    <img
+      class="avatar"
+      :src="'' + gravatar"
+    >
+    <p class="name">
+      {{ entry.username }}
+    </p>
+    <p class="score">
+      {{ entry.score }}
+    </p>
   </div>
 </template>
 
@@ -10,14 +17,14 @@
 import md5 from 'md5';
 
 export default {
-    name: "BoardEntry",
-    props: ["entry"],
+    name: 'BoardEntry',
+    props: ['entry'],
     data() {
         return {
             gravatar: `https://gravatar.com/avatar/${md5(this.entry.email.toLowerCase())}`
-        }
+        };
     }
-}
+};
 </script>
 
 <style scoped>

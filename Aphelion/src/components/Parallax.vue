@@ -1,23 +1,23 @@
 <template>
-    <div class="container">
-        <canvas ref="parallax-canvas"></canvas>
-    </div>
+  <div class="container">
+    <canvas ref="parallax-canvas" />
+  </div>
 </template>
 
 <script>
 import ParallaxRenderer from '@/ts/graphics/ParallaxRenderer';
 
 export default {
-    name: "Parallax",
+    name: 'Parallax',
     mounted() {
-        let ctx = this.$refs['parallax-canvas'].getContext('2d');
+        const ctx = this.$refs['parallax-canvas'].getContext('2d');
         this.par = new ParallaxRenderer(ctx);
         this.par.start();
     },
     methods: {
 
     }
-}
+};
 </script>
 
 <style scoped>

@@ -1,26 +1,30 @@
 <template>
   <div class="grid-container">
-      <div class="left">
-        <Menu />
-      </div>
-      <div class="right">
-        <Parallax />
-        <img class="logo" src="@/assets/LogoGrey.png" alt="logo">
-      </div>
+    <div class="left">
+      <Menu />
+    </div>
+    <div class="right">
+      <Parallax />
+      <img
+        class="logo"
+        src="@/assets/LogoGrey.png"
+        alt="logo"
+      >
+    </div>
   </div>
 </template>
 
 <script>
-  import Menu from "@/components/layout/home/Menu";
-  import Parallax from "@/components/Parallax";
+  import Menu from '@/components/layout/home/Menu';
+  import Parallax from '@/components/Parallax';
   
   export default {
-    name: "Home",
+    name: 'Home',
     components: {
       Menu,
       Parallax
     }
-  }
+  };
 </script>
 
 <style scoped>

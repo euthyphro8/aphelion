@@ -1,14 +1,14 @@
 <template>
-    <div class="title">
-        {{title}}
-    </div>
+  <div class="title">
+    {{ title }}
+  </div>
 </template>
 
 <script>
 export default {
-    name: "Header",
-    props: ["title"]
-}
+    name: 'Header',
+    props: ['title']
+};
 </script>
 
 <style scoped>

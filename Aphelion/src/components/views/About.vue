@@ -1,10 +1,9 @@
 <template>
   <div class="grid-container">
-      <div class="left">
-          <Parallax />
-      </div>
-      <div class="right">
-      </div>
+    <div class="left">
+      <Parallax />
+    </div>
+    <div class="right" />
   </div>
 </template>
 
@@ -12,14 +11,14 @@
 import Parallax from '@/components/Parallax';
 
 export default {
-    name: 'about',
+    name: 'About',
     components: {
         Parallax
     },
     data() {
-        return {}
+        return {};
     }
-}
+};
 </script>
 
 <style scoped>

@@ -4,30 +4,31 @@ import io from 'socket.io-client';
 import uuid from 'uuid';
 
 import MessageTypes from '@/ts/coms/MessageTypes';
-
-import LeaderboardEntry from '@/ts/interfaces/ui/LeaderboardEntry';
-import AccountInfo from '@/ts/interfaces/ui/AccountInfo';
-import AuthResponse from './AuthResponse';
+import IUserInfo from '@/ts/interfaces/ui/IUserInfo';
 
 
 class Client {
 
     private id: string;
     private socket: SocketIOClient.Socket;
+    private connected: boolean;
 
     constructor() {
         this.id = uuid.v4();
-
-        const options = {
+        this.connected = false;
+        const options: SocketIOClient.ConnectOpts = {
             autoConnect: false
-        } as SocketIOClient.ConnectOpts;
-        this.socket = io('http://localhost:3000', options);
+        };
+        this.socket = io('http://192.168.1.246:3000', options);
         this.socket.on('connect', this.onConnected.bind(this));
+        this.socket.on(MessageTypes.IdRequest, (callback: (clientId: string) => void) => {
+            callback(this.id);
+        });
         this.socket.connect();
     }
 
     private onConnected(): void {
-        this.socket.emit('ID_NOT', this.id);
+        this.connected = true;
     }
 
     /**
@@ -36,7 +37,7 @@ class Client {
      * @param isEmail If the humanId is an email, if not it is assumed a username
      * @param password The password for the specified account.
      */
-    public requestLogin(humanId: string, isEmail: boolean, password: string): Promise<AuthResponse> {
+    public requestLogin(humanId: string, isEmail: boolean, password: string): Promise<boolean> {
         return this.createRequest(MessageTypes.LoginRequest, humanId, isEmail, password);
     }
 
@@ -46,21 +47,21 @@ class Client {
      * @param email
      * @param password
      */
-    public requestRegister(username: string, email: string, password: string): Promise<AuthResponse> {
+    public requestRegister(username: string, email: string, password: string): Promise<boolean> {
         return this.createRequest(MessageTypes.RegisterRequest, username, email, password);
     }
 
     /**
      *
      */
-    public requestLeaderBoards(): Promise<LeaderboardEntry[]> {
+    public requestLeaderBoards(): Promise<IUserInfo[]> {
         return this.createRequest(MessageTypes.LeaderboardRequest);
     }
 
     /**
      *
      */
-    public requestAccountInfo(): Promise<AccountInfo> {
+    public requestAccountInfo(): Promise<IUserInfo> {
         return this.createRequest(MessageTypes.AccountInfoRequest);
     }
 
