@@ -6,18 +6,25 @@ import DatabaseService from './services/DatabaseService';
 import AmbientContext from './services/AmbientContext';
 import DatabaseReturnStatus from './utils/DatabaseReturnStatus';
 import IUserInfo from './interfaces/IUserInfo';
+import ConnectionService from './services/ConnectionService';
+import GameService from './services/GameService';
+import IAccountInfo from './interfaces/IAccountInfo';
 
 // Initialization of all Micro Services
-const logger = new LoggerService('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 1);
+const logger = new LoggerService('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 10 * 1024 * 1024);
 const dbCtx = new DatabaseService('mongodb://localhost:27017', 'local', 'accounts');
-const crypto = new CryptoService('96c551bd-2476-49bb-801b-15d53e629d1e');
-const server = new MessageService('3000', 'path');
+const crypto = new CryptoService(10);
+const server = new ConnectionService('3000', 'path');
+const messenger = new MessageService();
+const game = new GameService();
 
 // Add all micro-services to the ambient context
 AmbientContext.LoggerProvider = logger;
 AmbientContext.DatabaseProvider = dbCtx;
-AmbientContext.MessageProvider = server;
+AmbientContext.ConnectionProvider = server;
 AmbientContext.CryptoProvider = crypto;
+AmbientContext.MessageProvider = messenger;
+AmbientContext.GameProvider = game;
 
 logger.notice(
 `     _____         .__           .__  .__                 \n` +
@@ -34,10 +41,4 @@ logger.notice(
 `Process ID:\t\t\t${process.pid}\n` +
 `----------------------------------------------------------`);
 
-// server.start();
-
-// Tests
-
-
-// Tests
-
+server.start();

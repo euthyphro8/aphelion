@@ -21,7 +21,7 @@ class DatabaseService {
         this.colName = collection;
     }
 
-    public async connect() {
+    public async connect(): Promise<void> {
         try {
             if (!this.client) {
                 Context.LoggerProvider.info('Connecting to database instance.');
@@ -44,61 +44,51 @@ class DatabaseService {
      * Simply adds in a new user account provided one with the same username or email cannot be found.
      * @param user The user info to be added.
      */
-    public addAccount(user: IAccountInfo): Promise<DatabaseReturnStatus> {
-        return new Promise<DatabaseReturnStatus>(async (resolve, reject) => {
-            if (!this.client) {
-                await this.connect();
+    public async addAccount(user: IAccountInfo): Promise<DatabaseReturnStatus> {
+        if (!this.client) {
+            await this.connect();
+        }
+        try {
+            // If an account with the same username already exists
+            const usernameQuery = await this.collection!.findOne({ username: user.username });
+            if (usernameQuery) {
+                Context.LoggerProvider.info(`Found account with same username ${(usernameQuery as IAccountInfo).username}`);
+                return DatabaseReturnStatus.UsernameTaken;
             }
-            try {
-                // If an account with the same username already exists
-                const usernameQuery = await this.collection!.findOne({ username: user.username });
-                if (usernameQuery) {
-                    Context.LoggerProvider.info(`Found account with same username ${(usernameQuery as IAccountInfo).username}`);
-                    resolve(DatabaseReturnStatus.UsernameTaken);
-                    return;
-                }
-                // If an account with the same eamil already exists
-                const emailQuery = await this.collection!.findOne({ email: user.email });
-                if (emailQuery) {
-                    Context.LoggerProvider.info(`Found account with same email ${(emailQuery as IAccountInfo).email}`);
-                    resolve(DatabaseReturnStatus.EmailTaken);
-                    return;
-                }
-                // Otherwise insert into the database
-                const insertResult = await this.collection!.insertOne(user);
-                if (insertResult.insertedCount === 1) {
-                    resolve(DatabaseReturnStatus.Success);
-                } else {
-                    resolve(DatabaseReturnStatus.Failure);
-                }
-            } catch (generalError) {
-                Context.LoggerProvider.alert(`There was a general error with the insert. ${generalError.message || generalError}`);
-                reject(generalError.message || 'There was an unknown error in the Database Service when adding an account.');
+            // If an account with the same eamil already exists
+            const emailQuery = await this.collection!.findOne({ email: user.email });
+            if (emailQuery) {
+                Context.LoggerProvider.info(`Found account with same email ${(emailQuery as IAccountInfo).email}`);
+                return DatabaseReturnStatus.EmailTaken;
             }
-        });
+            // Otherwise insert into the database
+            const insertResult = await this.collection!.insertOne(user);
+            if (insertResult.insertedCount === 1) {
+                return DatabaseReturnStatus.Success;
+            }
+        } catch (generalError) {
+            Context.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+        }
+        return DatabaseReturnStatus.Failure;
     }
 
     /**
      * Finds a user account based on the provided email, and updates it.
      * @param user The user info to be updated.
      */
-    public updateAccount(user: IAccountInfo): Promise<DatabaseReturnStatus> {
-        return new Promise<DatabaseReturnStatus>(async (resolve, reject) => {
-            if (!this.client) {
-                await this.connect();
+    public async updateAccount(user: IAccountInfo): Promise<DatabaseReturnStatus> {
+        if (!this.client) {
+            await this.connect();
+        }
+        try {
+            const replaceResult = await this.collection!.findOneAndReplace({email: user.email}, user);
+            if (replaceResult.ok) {
+                return DatabaseReturnStatus.Success;
             }
-            try {
-                const replaceResult = await this.collection!.findOneAndReplace({email: user.email}, user);
-                if (replaceResult.ok) {
-                    resolve(DatabaseReturnStatus.Success);
-                } else {
-                    resolve(DatabaseReturnStatus.Failure);
-                }
-            } catch (generalError) {
-                Context.LoggerProvider.alert(`There was a general error with the insert. ${generalError.message || generalError}`);
-                reject(generalError.message || 'There was an unknown error in the Database Service when adding an account.');
-            }
-        });
+        } catch (generalError) {
+            Context.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+        }
+        return DatabaseReturnStatus.Failure;
     }
 
     /**
@@ -106,41 +96,46 @@ class DatabaseService {
      * @param humanId The username or email.
      * @param isEmail Whether the human id is an email address, if not username will be assumed.
      */
-    public getAccount(humanId: string, isEmail: boolean): Promise<IAccountInfo> {
-        return new Promise<IAccountInfo>(async (resolve, reject) => {
-            if (!this.client) {
-                await this.connect();
+    public async getAccount(humanId: string, isEmail: boolean): Promise<IAccountInfo | null> {
+        if (!this.client) {
+            await this.connect();
+        }
+        try {
+            // Create the filter for our query
+            const filter = {} as any;
+            if (isEmail) {
+                filter.email = humanId;
+            } else {
+                filter.username = humanId;
             }
-            try {
-                // Create the filter for our query
-                const filter = {} as any;
-                if (isEmail) {
-                    filter.email = humanId;
-                } else {
-                    filter.username = humanId;
-                }
-                // Return whatever comes back, the caller should handle null exceptions
-                resolve((await this.collection!.findOne(filter)) as IAccountInfo);
-            } catch (generalError) {
-                Context.LoggerProvider.alert(`There was a general error with the insert. ${generalError.message || generalError}`);
-                reject(generalError.message || 'There was an unknown error in the Database Service when retrieving an account.');
-            }
-        });
+            // Return whatever comes back, the caller should handle null exceptions
+            return (await this.collection!.findOne(filter)) as IAccountInfo;
+        } catch (generalError) {
+            Context.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+            return null;
+        }
     }
 
-    public getAllAccounts(): Promise<IAccountInfo[]> {        
-        return new Promise<IAccountInfo[]>(async (resolve, reject) => {
-            if (!this.client) {
-                await this.connect();
+    public async getAllAccounts(): Promise<IAccountInfo[] | null> {
+        if (!this.client) {
+            await this.connect();
+        }
+        try {
+            const cursor = await this.collection!.find({});
+            const accounts: IAccountInfo[] = [];
+            while (cursor.hasNext()) {
+                const account = await cursor.next();
+                if (account as IAccountInfo) {
+                    accounts.push(account as IAccountInfo);
+                } else {
+                    Context.LoggerProvider.warn(`Found an non AccoutInfo entry while getting all accounts. ${JSON.stringify(account)}`);
+                }
             }
-            try {
-                const cursor = this.collection!.find({});
-                // cursor.
-            } catch (generalError) {
-                Context.LoggerProvider.alert(`There was a general error with the insert. ${generalError.message || generalError}`);
-                reject(generalError.message || 'There was an unknown error in the Database Service when retrieving an account.');
-            }
-        });
+            return accounts;
+        } catch (generalError) {
+            Context.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+            return null;
+        }
     }
 }
 

@@ -6,14 +6,20 @@ const MessageService_1 = tslib_1.__importDefault(require("./services/MessageServ
 const CryptoService_1 = tslib_1.__importDefault(require("./services/CryptoService"));
 const DatabaseService_1 = tslib_1.__importDefault(require("./services/DatabaseService"));
 const AmbientContext_1 = tslib_1.__importDefault(require("./services/AmbientContext"));
-const logger = new LoggerService_1.default('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 1);
+const ConnectionService_1 = tslib_1.__importDefault(require("./services/ConnectionService"));
+const GameService_1 = tslib_1.__importDefault(require("./services/GameService"));
+const logger = new LoggerService_1.default('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 10 * 1024 * 1024);
 const dbCtx = new DatabaseService_1.default('mongodb://localhost:27017', 'local', 'accounts');
-const crypto = new CryptoService_1.default('96c551bd-2476-49bb-801b-15d53e629d1e');
-const server = new MessageService_1.default('3000', 'path');
+const crypto = new CryptoService_1.default(10);
+const server = new ConnectionService_1.default('3000', 'path');
+const messenger = new MessageService_1.default();
+const game = new GameService_1.default();
 AmbientContext_1.default.LoggerProvider = logger;
 AmbientContext_1.default.DatabaseProvider = dbCtx;
-AmbientContext_1.default.MessageProvider = server;
+AmbientContext_1.default.ConnectionProvider = server;
 AmbientContext_1.default.CryptoProvider = crypto;
+AmbientContext_1.default.MessageProvider = messenger;
+AmbientContext_1.default.GameProvider = game;
 logger.notice(`     _____         .__           .__  .__                 \n` +
     `    /  _  \\ ______ |  |__   ____ |  | |__| ____   ____    \n` +
     `   /  /_\\  \\\\____ \\|  |  \\_/ __ \\|  | |  |/  _ \\ /    \\   \n` +
@@ -27,12 +33,5 @@ logger.notice(`     _____         .__           .__  .__                 \n` +
     `Current Platform:\t\t${process.platform}\n` +
     `Process ID:\t\t\t${process.pid}\n` +
     `----------------------------------------------------------`);
-dbCtx.connect().then(() => {
-    logger.debug(`Connection callback. Attempting an insert.`);
-    return dbCtx.getAccount('name', false);
-}).then((result) => {
-    logger.debug(`Add callback. Insert status: ${result.username}.`);
-}).catch((error) => {
-    logger.crit('There was an error starting the service.');
-});
+server.start();
 //# sourceMappingURL=main.js.map

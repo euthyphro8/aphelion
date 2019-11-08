@@ -3,6 +3,7 @@ import DatabaseService from './DatabaseService';
 import CryptoService from './CryptoService';
 import MessageService from './MessageService';
 import LoggerService from './LoggerService';
+import GameService from './GameService';
 
 class AmbientContext {
     public static ConnectionProvider: ConnectionService;
@@ -10,6 +11,7 @@ class AmbientContext {
     public static MessageProvider: MessageService;
     public static CryptoProvider: CryptoService;
     public static LoggerProvider: LoggerService;
+    public static GameProvider: GameService;
 }
 
 export default AmbientContext;

@@ -1,29 +1,57 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const express_1 = tslib_1.__importDefault(require("express"));
-const http_1 = tslib_1.__importDefault(require("http"));
-const socket_io_1 = tslib_1.__importDefault(require("socket.io"));
 const AmbientContext_1 = tslib_1.__importDefault(require("./AmbientContext"));
+const MessageTypes_1 = tslib_1.__importDefault(require("../utils/MessageTypes"));
+const DatabaseReturnStatus_1 = tslib_1.__importDefault(require("../utils/DatabaseReturnStatus"));
 class MessageService {
-    constructor(port, path) {
-        this.port = process.env.PORT || port;
-        this.sockets = new Map();
-        this.expressApp = express_1.default();
-        this.httpServer = http_1.default.createServer(this.expressApp);
-        this.ioServer = socket_io_1.default(this.httpServer);
+    constructor() {
+        this.authed = new Map();
+        this.messengers = new Map();
     }
-    start() {
-        this.expressApp.use(express_1.default.static('public'));
-        this.ioServer.on('connect', this.onConnection.bind(this));
-        this.httpServer.listen(this.port);
-        AmbientContext_1.default.LoggerProvider.info(`Socket server started on port ${this.port}.`);
+    registerMessenger(clientId, messenger) {
+        this.messengers.set(clientId, messenger);
+        messenger.on(MessageTypes_1.default.LeaderboardRequest, this.onRequestLogin.bind(this));
+        messenger.on(MessageTypes_1.default.LeaderboardRequest, this.onRequestRegister.bind(this));
+        messenger.on(MessageTypes_1.default.AccountInfoRequest, this.onAccountInfoRequest.bind(this));
     }
-    onConnection(socket) {
-        socket.emit('ID_REQ', (clientId) => {
-            AmbientContext_1.default.LoggerProvider.info(`Client [${clientId}] connected from [${socket.handshake.address}].`);
-            this.sockets.set(clientId, socket);
+    onRequestLogin(clientId, humanId, isEmail, password, callback) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const account = yield AmbientContext_1.default.DatabaseProvider.getAccount(humanId, isEmail);
+            const hashed = yield AmbientContext_1.default.CryptoProvider.hashPassword(password);
+            if (account && account.password === hashed) {
+                delete account.password;
+                this.authed.set(clientId, account);
+                callback(true);
+            }
+            else {
+                callback(false);
+            }
         });
+    }
+    onRequestRegister(clientId, username, email, password, callback) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const hashed = yield AmbientContext_1.default.CryptoProvider.hashPassword(password);
+            const account = { username, email, password: hashed, score: 0, avatar: '' };
+            const result = yield AmbientContext_1.default.DatabaseProvider.addAccount(account);
+            if (result === DatabaseReturnStatus_1.default.Success && account && account.password === hashed) {
+                delete account.password;
+                this.authed.set(clientId, account);
+                callback(true);
+            }
+            else {
+                callback(false);
+            }
+        });
+    }
+    onAccountInfoRequest(clientId, callback) {
+        const user = this.authed.get(clientId);
+        if (user) {
+            callback(user);
+        }
+        else {
+            callback(undefined);
+        }
     }
 }
 exports.default = MessageService;
