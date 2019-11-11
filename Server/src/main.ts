@@ -4,11 +4,8 @@ import MessageService from './services/MessageService';
 import CryptoService from './services/CryptoService';
 import DatabaseService from './services/DatabaseService';
 import AmbientContext from './services/AmbientContext';
-import DatabaseReturnStatus from './utils/DatabaseReturnStatus';
-import IUserInfo from './interfaces/IUserInfo';
 import ConnectionService from './services/ConnectionService';
 import GameService from './services/GameService';
-import IAccountInfo from './interfaces/IAccountInfo';
 
 // Initialization of all Micro Services
 const logger = new LoggerService('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 10 * 1024 * 1024);

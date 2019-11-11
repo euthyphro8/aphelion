@@ -35,6 +35,7 @@ class ConnectionService {
         socket.emit(MessageTypes.IdRequest, (clientId: string) => {
             Context.LoggerProvider.info(`Client [${clientId}] connected from [${socket.handshake.address}].`);
             this.sockets.set(clientId, socket);
+            Context.MessageProvider.registerMessenger(clientId, socket);
             socket.once('disconnect', (reason) => {
                 Context.LoggerProvider.debug(`Client [${clientId}] disconnected, reason: ${reason}.`);
                 Context.MessageProvider.unregisterMessenger(clientId);

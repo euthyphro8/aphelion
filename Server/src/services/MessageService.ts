@@ -1,11 +1,8 @@
 
 // External Dependencies
-import express from 'express';
-import http from 'http';
 import io from 'socket.io';
 
 // Internal Dependencies
-import IAuthResponse from '@/interfaces/IAuthResponse';
 import Context from './AmbientContext';
 import MessageTypes from '../utils/MessageTypes';
 import IUserInfo from '@/interfaces/IUserInfo';
@@ -14,11 +11,11 @@ import DatabaseReturnStatus from '../utils/DatabaseReturnStatus';
 
 class MessageService {
 
-    private authed: Map<string, IUserInfo>;
+    private authenticated: Map<string, IUserInfo>;
     private messengers: Map<string, io.Socket>;
 
     constructor() {
-        this.authed = new Map<string, IUserInfo>();
+        this.authenticated = new Map<string, IUserInfo>();
         this.messengers = new Map<string, io.Socket>();
     }
 
@@ -49,7 +46,7 @@ class MessageService {
             // First we scrub the hashed password from the entry effectively converting it into a user info object.
             delete account.password;
             // The authetication was successful, we can store the info in the users map to denote as such.
-            this.authed.set(clientId, account as IUserInfo);
+            this.authenticated.set(clientId, account as IUserInfo);
             callback(true);
         } else {
             callback(false);
@@ -64,7 +61,7 @@ class MessageService {
             // First we scrub the hashed password from the entry effectively converting it into a user info object.
             delete account.password;
             // The authetication was successful, we can store the info in the users map to denote as such.
-            this.authed.set(clientId, account as IUserInfo);
+            this.authenticated.set(clientId, account as IUserInfo);
             callback(true);
         } else {
             callback(false);
@@ -72,7 +69,7 @@ class MessageService {
     }
 
     private onAccountInfoRequest(clientId: string, callback: (info?: IUserInfo) => void): void {
-        const user = this.authed.get(clientId);
+        const user = this.authenticated.get(clientId);
         if (user) {
             callback(user as IUserInfo);
         } else {
@@ -81,7 +78,7 @@ class MessageService {
     }
 
     private async onLeaderBoardRequest(clientId: string, callback: (entries: any) => void): Promise<void> {
-        const user = this.authed.get(clientId);
+        const user = this.authenticated.get(clientId);
         if (user) {
             const entries = await Context.DatabaseProvider.getAllAccounts();
             if (entries) {

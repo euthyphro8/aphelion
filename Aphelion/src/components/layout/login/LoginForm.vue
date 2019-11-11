@@ -1,37 +1,15 @@
 <template>
   <div class="form-container">
-    <img
-      class="logo"
-      src="@/assets/LogoGrey.png"
-      alt="Logo"
-    >
+    <img class="logo" src="@/assets/LogoGrey.png" alt="Logo">
     <br>
-    <p class="title">
-      Login
-    </p>
+    <p class="title">Login</p>
     <br>
-    <form @submit="handleSubmit">
-      <input
-        v-model="id"
-        type="text"
-        placeholder="Username or Email"
-      >
-      <input
-        v-model="password"
-        type="password"
-        placeholder="Password"
-      >
-      <input
-        type="submit"
-        value="Submit"
-      >
+    <form @submit="handleSubmit" novalidate="true">
+      <input v-model="humanId" type="text" placeholder="Username or Email">
+      <input v-model="password" type="password" placeholder="Password">
+      <input type="submit" value="Submit">
     </form>
-    <p class="message">
-      Need an account?
-      <a
-        id="login"
-        @click="$emit('switch-form')"
-      >Register</a>
+    <p class="message"> Need an account? <a id="login" @click="$emit('switch-form')">Register</a>
     </p>
   </div>
 </template>
@@ -39,23 +17,28 @@
 <script>
 import Validator from '@/ts/util/Validator';
 export default {
-  name: 'RegisterForm',
+  name: 'LoginForm',
   data() {
     return {
-      id: '',
+      humanId: '',
       password: ''
     };
   },
   methods: {
-    handleSubmit: function(e) {
-      if (Validator.VerifyUsername(this.id) || Validator.VerifyEmail(this.id)) {
-        if (Validator.VerifyPassword(this.password)) {
+    handleSubmit: async function (event) {
+      console.log(`[Login] Got login submit. ${this.humanId} ${this.password}`);
+      const isEmail = Validator.VerifyEmail(this.humanId);
+      if(isEmail || Validator.VerifyUsername(this.humanId)) {
+        console.log('[Login] Validated.');
+        const result = await this.$store.state.client.requestLogin(this.humanId, isEmail, this.password);
+        if(result) {
+          console.log('[Login] Server accepted login.');
           this.$store.commit('authenticate');
           this.$router.push('/');
-          return;
         }
+      }else {
+        console.log('[Login] Failed to validate.');
       }
-      console.log('[Login] Failed to validate.');
     }
   }
 };

@@ -19,7 +19,7 @@ class Client {
         const options: SocketIOClient.ConnectOpts = {
             autoConnect: false
         };
-        this.socket = io('http://192.168.1.246:3000', options);
+        this.socket = io('http://localhost:3000', options);
         this.socket.on('connect', this.onConnected.bind(this));
         this.socket.on(MessageTypes.IdRequest, (callback: (clientId: string) => void) => {
             callback(this.id);
@@ -29,6 +29,10 @@ class Client {
 
     private onConnected(): void {
         this.connected = true;
+    }
+
+    public isConnected(): boolean {
+        return this.connected;
     }
 
     /**

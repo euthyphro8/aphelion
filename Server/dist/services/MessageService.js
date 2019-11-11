@@ -6,7 +6,7 @@ const MessageTypes_1 = tslib_1.__importDefault(require("../utils/MessageTypes"))
 const DatabaseReturnStatus_1 = tslib_1.__importDefault(require("../utils/DatabaseReturnStatus"));
 class MessageService {
     constructor() {
-        this.authed = new Map();
+        this.authenticated = new Map();
         this.messengers = new Map();
     }
     registerMessenger(clientId, messenger) {
@@ -32,7 +32,7 @@ class MessageService {
             const hashed = yield AmbientContext_1.default.CryptoProvider.hashPassword(password);
             if (account && account.password === hashed) {
                 delete account.password;
-                this.authed.set(clientId, account);
+                this.authenticated.set(clientId, account);
                 callback(true);
             }
             else {
@@ -47,7 +47,7 @@ class MessageService {
             const result = yield AmbientContext_1.default.DatabaseProvider.addAccount(account);
             if (result === DatabaseReturnStatus_1.default.Success && account && account.password === hashed) {
                 delete account.password;
-                this.authed.set(clientId, account);
+                this.authenticated.set(clientId, account);
                 callback(true);
             }
             else {
@@ -56,7 +56,7 @@ class MessageService {
         });
     }
     onAccountInfoRequest(clientId, callback) {
-        const user = this.authed.get(clientId);
+        const user = this.authenticated.get(clientId);
         if (user) {
             callback(user);
         }
@@ -66,7 +66,7 @@ class MessageService {
     }
     onLeaderBoardRequest(clientId, callback) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const user = this.authed.get(clientId);
+            const user = this.authenticated.get(clientId);
             if (user) {
                 const entries = yield AmbientContext_1.default.DatabaseProvider.getAllAccounts();
                 if (entries) {

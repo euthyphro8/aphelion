@@ -20,16 +20,9 @@ export default new Vuex.Store({
     state: unloadedState,
     mutations: {
         authenticate(state) {
-            // state.authenticated = true;
-            // const status = { isAuthenticated: true } as AuthStatus;
-            // console.log('Storing AuthStatus cookie');
-            // Vue.cookies.set('AuthStatus', status, {
-            //     expires: Time.MinutesFromNow(10),
-            //     secure: true
-            // });
+            state.authenticated = true;
         }
     },
     actions: {
-
     }
 });
