@@ -33,5 +33,8 @@ logger.notice(`     _____         .__           .__  .__                 \n` +
     `Current Platform:\t\t${process.platform}\n` +
     `Process ID:\t\t\t${process.pid}\n` +
     `----------------------------------------------------------`);
-server.start();
+(() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    yield dbCtx.connect();
+    server.start();
+}))();
 //# sourceMappingURL=main.js.map

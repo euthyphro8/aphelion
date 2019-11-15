@@ -6,7 +6,6 @@ import uuid from 'uuid';
 import MessageTypes from '@/ts/coms/MessageTypes';
 import IUserInfo from '@/ts/interfaces/ui/IUserInfo';
 
-
 class Client {
 
     private id: string;
@@ -53,6 +52,7 @@ class Client {
      */
     public requestRegister(username: string, email: string, password: string): Promise<boolean> {
         return this.createRequest(MessageTypes.RegisterRequest, username, email, password);
+        // this.socket.emit(MessageTypes.RegisterRequest, this.id, username, email, password)
     }
 
     /**
@@ -73,10 +73,7 @@ class Client {
         const promise = new Promise<T>((resolve, reject) => {
             try {
                 this.socket.emit(type, this.id, ...params,
-                    (rejected: boolean, result: T) => {
-                        if (rejected) {
-                            reject('Server rejected the request.');
-                        }
+                    (result: T) => {
                         resolve(result);
                     }
                 );

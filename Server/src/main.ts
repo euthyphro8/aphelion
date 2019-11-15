@@ -38,4 +38,7 @@ logger.notice(
 `Process ID:\t\t\t${process.pid}\n` +
 `----------------------------------------------------------`);
 
-server.start();
+(async () => {
+    await dbCtx.connect();
+    server.start();
+})();

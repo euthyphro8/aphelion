@@ -14,20 +14,20 @@ class DatabaseService {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 if (!this.client) {
-                    AmbientContext_1.default.LoggerProvider.info('Connecting to database instance.');
+                    AmbientContext_1.default.LoggerProvider.info('[ DTBS SVC ] Connecting to database instance.');
                     this.client = yield mongodb_1.MongoClient.connect(this.dbUrl, {
                         useNewUrlParser: true,
                         useUnifiedTopology: true
                     });
-                    AmbientContext_1.default.LoggerProvider.info(`Connected to mongodb server.`);
+                    AmbientContext_1.default.LoggerProvider.info(`[ DTBS SVC ] Connected to mongodb server.`);
                     this.database = this.client.db(this.dbName);
-                    AmbientContext_1.default.LoggerProvider.info(`Got database instance.`);
+                    AmbientContext_1.default.LoggerProvider.info(`[ DTBS SVC ] Got database instance.`);
                     this.collection = this.database.collection(this.colName);
-                    AmbientContext_1.default.LoggerProvider.info(`Got collection instance.`);
+                    AmbientContext_1.default.LoggerProvider.info(`[ DTBS SVC ] Got collection instance.`);
                 }
             }
             catch (error) {
-                AmbientContext_1.default.LoggerProvider.crit(`Unable to connect to mongodb. Reason:${error}`);
+                AmbientContext_1.default.LoggerProvider.crit(`[ DTBS SVC ] Unable to connect to mongodb. Reason:${error}`);
             }
         });
     }
@@ -37,14 +37,15 @@ class DatabaseService {
                 yield this.connect();
             }
             try {
+                AmbientContext_1.default.LoggerProvider.info(`[ DTBS SVC ] Add account request for ${JSON.stringify(user)}`);
                 const usernameQuery = yield this.collection.findOne({ username: user.username });
                 if (usernameQuery) {
-                    AmbientContext_1.default.LoggerProvider.info(`Found account with same username ${usernameQuery.username}`);
+                    AmbientContext_1.default.LoggerProvider.info(`[ DTBS SVC ] Found account with same username ${JSON.stringify(usernameQuery)}`);
                     return DatabaseReturnStatus_1.default.UsernameTaken;
                 }
                 const emailQuery = yield this.collection.findOne({ email: user.email });
                 if (emailQuery) {
-                    AmbientContext_1.default.LoggerProvider.info(`Found account with same email ${emailQuery.email}`);
+                    AmbientContext_1.default.LoggerProvider.info(`[ DTBS SVC ] Found account with same email ${emailQuery.email}`);
                     return DatabaseReturnStatus_1.default.EmailTaken;
                 }
                 const insertResult = yield this.collection.insertOne(user);
@@ -53,7 +54,7 @@ class DatabaseService {
                 }
             }
             catch (generalError) {
-                AmbientContext_1.default.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+                AmbientContext_1.default.LoggerProvider.error(`[ DTBS SVC ] There was a general error with the insert. ${generalError.message || generalError}`);
             }
             return DatabaseReturnStatus_1.default.Failure;
         });
@@ -70,7 +71,7 @@ class DatabaseService {
                 }
             }
             catch (generalError) {
-                AmbientContext_1.default.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+                AmbientContext_1.default.LoggerProvider.error(`[ DTBS SVC ] There was a general error with the insert. ${generalError.message || generalError}`);
             }
             return DatabaseReturnStatus_1.default.Failure;
         });
@@ -91,7 +92,7 @@ class DatabaseService {
                 return (yield this.collection.findOne(filter));
             }
             catch (generalError) {
-                AmbientContext_1.default.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+                AmbientContext_1.default.LoggerProvider.error(`[ DTBS SVC ] There was a general error with the insert. ${generalError.message || generalError}`);
                 return null;
             }
         });
@@ -110,13 +111,13 @@ class DatabaseService {
                         accounts.push(account);
                     }
                     else {
-                        AmbientContext_1.default.LoggerProvider.warn(`Found an non AccoutInfo entry while getting all accounts. ${JSON.stringify(account)}`);
+                        AmbientContext_1.default.LoggerProvider.warn(`[ DTBS SVC ] Found an non AccountInfo entry while getting all accounts. ${JSON.stringify(account)}`);
                     }
                 }
                 return accounts;
             }
             catch (generalError) {
-                AmbientContext_1.default.LoggerProvider.error(`There was a general error with the insert. ${generalError.message || generalError}`);
+                AmbientContext_1.default.LoggerProvider.error(`[ DTBS SVC ] There was a general error with the insert. ${generalError.message || generalError}`);
                 return null;
             }
         });

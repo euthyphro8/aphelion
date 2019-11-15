@@ -7,17 +7,33 @@ class CryptoService {
     constructor(saltRounds) {
         this.saltRounds = saltRounds;
     }
-    verifyPassword(humanId, isEmail, password) {
+    VerifyAccount(humanId, isEmail, password) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
+                AmbientContext_1.default.LoggerProvider.info(`[ CRPT SVC ] Verifying account for ${humanId}.`);
                 const account = yield AmbientContext_1.default.DatabaseProvider.getAccount(humanId, isEmail);
                 if (account) {
-                    return yield bcrypt_1.default.compare(password, account.password);
+                    AmbientContext_1.default.LoggerProvider.info(`[ CRPT SVC ] Found account record, comparing password.`);
+                    if (yield bcrypt_1.default.compare(password, account.password)) {
+                        AmbientContext_1.default.LoggerProvider.info(`[ CRPT SVC ] Account verification success.`);
+                        return account;
+                    }
                 }
-                return false;
+                AmbientContext_1.default.LoggerProvider.warn(`[ CRPT SVC ] Account verification failed.`);
             }
             catch (error) {
-                AmbientContext_1.default.LoggerProvider.error(`There was a general error while verifying a password ${error.message}`);
+                AmbientContext_1.default.LoggerProvider.error(`[ CRPT SVC ] There was a general error while verifying a password ${error.message}`);
+            }
+            return null;
+        });
+    }
+    VerifyPassword(storedHash, password) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield bcrypt_1.default.compare(password, storedHash);
+            }
+            catch (error) {
+                AmbientContext_1.default.LoggerProvider.error(`[ CRPT SVC ] There was a general error while verifying a password ${error.message}`);
                 return false;
             }
         });
@@ -29,7 +45,7 @@ class CryptoService {
                 return yield bcrypt_1.default.hash(password, salt);
             }
             catch (error) {
-                AmbientContext_1.default.LoggerProvider.error(`There was a general error while hashing a password ${error.message}`);
+                AmbientContext_1.default.LoggerProvider.error(`[ CRPT SVC ] There was a general error while hashing a password ${error.message}`);
                 return null;
             }
         });

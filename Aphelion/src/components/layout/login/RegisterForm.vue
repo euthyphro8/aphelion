@@ -7,7 +7,8 @@
       <input v-model="email" type="text" placeholder="Email">
       <input v-model="password" type="password" placeholder="Password">
       <input v-model="repassword" type="password" placeholder="Retype Password">
-      <input type="submit" value="Submit">
+      <input :disabled="disabled" type="submit" value="Submit">
+      <p class="status">{{status}}</p>
     </form>
     <p class="message">
       Already registered?
@@ -26,26 +27,43 @@ export default {
       username: '',
       password: '',
       repassword: '',
-      email: ''
+      email: '',
+      disabled: false,
+      status: ''
     };
   },
   methods: {
-    handleSubmit: async (event) => {
-          console.log('[Register] Got register submit.');
-        if (Validator.VerifyUsername(this.username) && Validator.VerifyEmail(this.email) && Validator.VerifyPassword(this.password)) {
-          console.log('[Register] Validated.');
-          const result = await this.$store.state.client.requestRegister(this.username, this.email, this.password);
-          if(result) {
-            console.log('[Register] Server accepted registration.');
-            this.$store.commit('authenticate');
-            this.$router.push('/');
-          } else {
-            // TODO Add html message
-            console.log('[Register] Registration rejected by server.');
-          }
+    handleSubmit: async function(event) {
+      this.disabled = true;
+      console.log('[Register] Got register submit.');
+      const validEmail = Validator.VerifyEmail(this.email);
+      const validUser = Validator.VerifyUsername(this.username);
+      const validPass = Validator.VerifyPassword(this.password);
+      if(validEmail && validUser && validPass && (this.password === this.repassword)) {
+        console.log('[Register] Validated.');
+        const result = await this.$store.state.client.requestRegister(this.username, this.email, this.password);
+        if(result) {
+          console.log('[Register] Server accepted registration.');
+          this.$store.commit('authenticate');
+          this.$router.push('/');
         } else {
-          console.log('[Register] Failed to validate.');
+          console.log('[Register] Registration rejected by server.');
+          this.disabled = false;
+          this.status = 'Credentials rejected by server.';
         }
+      } else {
+        console.log('[Register] Failed to validate.');
+        this.disabled = false;
+        if(!validUser) {
+          this.status = 'Needs a valid username.';
+        } else if(!validEmail) {
+          this.status = 'Needs a valid email address.';
+        } else if(!validPass) {
+          this.status = 'Needs a valid password.';
+        } else if(!(this.password === this.repassword)) {
+          this.status = 'Passwords must match';
+        }
+      }
     }
   }
 };
@@ -121,6 +139,12 @@ a:hover {
   font-style: italic;
   text-align: center;
   color: #ccc;
+}
+
+.status {
+  text-align: center;
+  text-emphasis: 600em;
+  color: #a22;
 }
 
 .title {

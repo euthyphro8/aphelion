@@ -11,6 +11,8 @@
   --primary: #0C8346;
   --primary-highlight: #066333;
   --primary-font: #1d1d1d;
+  --disabled: #2f4138;
+  /* --disabled: #3d3d3d; */
 }
 
 * {

@@ -3,32 +3,29 @@
     <div class="title">
       Game
     </div>
-    <a href="/#/game">
-      <div class="menu-item">
-        <p>Play</p>
-      </div>
-    </a>
-    <a href="/#/account">
-      <div class="menu-item">
-        <p>Account</p>
-      </div>
-    </a>
-    <a href="/#/leaderboard">
-      <div class="menu-item">
-        <p>Leaderboards</p>
-      </div>
-    </a>
-    <a href="/#/about">
-      <div class="menu-item">
-        <p>About</p>
-      </div>
-    </a>
+    <div class="menu-item"  v-on:click="onClick('game')">
+      <p>Play</p>
+    </div>
+    <div class="menu-item"  v-on:click="onClick('account')">
+      <p>Account</p>
+    </div>
+    <div class="menu-item"  v-on:click="onClick('leaderboards')">
+      <p>Leaderboards</p>
+    </div>
+    <div class="menu-item"  v-on:click="onClick('about')">
+      <p>About</p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Menu'
+  name: 'Menu',
+  methods: {
+    onClick: function(location) {
+      this.$router.push(`/${location}`);
+    }
+  }
 };
 </script>
 

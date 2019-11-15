@@ -18,15 +18,15 @@ class ConnectionService {
         this.expressApp.use(express_1.default.static('public'));
         this.ioServer.on('connect', this.onConnection.bind(this));
         this.httpServer.listen(this.port);
-        AmbientContext_1.default.LoggerProvider.info(`Socket server started on port ${this.port}.`);
+        AmbientContext_1.default.LoggerProvider.info(`[ CONN SVC ] Socket server started on port ${this.port}.`);
     }
     onConnection(socket) {
         socket.emit(MessageTypes_1.default.IdRequest, (clientId) => {
-            AmbientContext_1.default.LoggerProvider.info(`Client [${clientId}] connected from [${socket.handshake.address}].`);
+            AmbientContext_1.default.LoggerProvider.info(`[ CONN SVC ] Client [${clientId}] connected from [${socket.handshake.address}].`);
             this.sockets.set(clientId, socket);
             AmbientContext_1.default.MessageProvider.registerMessenger(clientId, socket);
             socket.once('disconnect', (reason) => {
-                AmbientContext_1.default.LoggerProvider.debug(`Client [${clientId}] disconnected, reason: ${reason}.`);
+                AmbientContext_1.default.LoggerProvider.debug(`[ CONN SVC ] Client [${clientId}] disconnected, reason: ${reason}.`);
                 AmbientContext_1.default.MessageProvider.unregisterMessenger(clientId);
                 this.sockets.delete(clientId);
             });

@@ -7,7 +7,8 @@
     <form @submit="handleSubmit" novalidate="true">
       <input v-model="humanId" type="text" placeholder="Username or Email">
       <input v-model="password" type="password" placeholder="Password">
-      <input type="submit" value="Submit">
+      <input :disabled="disabled" type="submit" value="Submit">
+    <p class="status">{{status}}</p>
     </form>
     <p class="message"> Need an account? <a id="login" @click="$emit('switch-form')">Register</a>
     </p>
@@ -21,23 +22,40 @@ export default {
   data() {
     return {
       humanId: '',
-      password: ''
+      password: '',
+      disabled: false,
+      status: ''
     };
   },
   methods: {
     handleSubmit: async function (event) {
+      this.disabled = true;
       console.log(`[Login] Got login submit. ${this.humanId} ${this.password}`);
-      const isEmail = Validator.VerifyEmail(this.humanId);
-      if(isEmail || Validator.VerifyUsername(this.humanId)) {
+      const validEmail = Validator.VerifyEmail(this.humanId);
+      const validUser = Validator.VerifyUsername(this.humanId);
+      const validPass = Validator.VerifyPassword(this.password);
+      if((validEmail || validUser) && validPass) {
         console.log('[Login] Validated.');
-        const result = await this.$store.state.client.requestLogin(this.humanId, isEmail, this.password);
+        const result = await this.$store.state.client.requestLogin(this.humanId, validEmail, this.password);
         if(result) {
           console.log('[Login] Server accepted login.');
           this.$store.commit('authenticate');
           this.$router.push('/');
         }
+        else {
+          console.log('[Login] Failed to login.');
+          this.disabled = false;
+          this.status = 'Bad login credentials.'
+        }
       }else {
         console.log('[Login] Failed to validate.');
+        this.disabled = false;
+          if(!(validEmail || validUser)) {
+            this.status = 'Must enter a valid username or email.'
+          }
+          if(!this.password) {
+            this.status = 'Invalid login credentials.'
+          }
       }
     }
   }
@@ -98,6 +116,9 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: var(--primary-highlight);
 }
+input[type="submit"]:disabled {
+  background-color: var(--disabled);
+}
 
 a {
   text-decoration: none;
@@ -113,6 +134,12 @@ a:hover {
   font-style: italic;
   text-align: center;
   color: #ccc;
+}
+
+.status {
+  text-align: center;
+  text-emphasis: 600em;
+  color: #a22;
 }
 
 .title {

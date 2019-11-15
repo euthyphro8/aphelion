@@ -28,16 +28,16 @@ class ConnectionService {
         this.expressApp.use(express.static('public'));
         this.ioServer.on('connect', this.onConnection.bind(this));
         this.httpServer.listen(this.port);
-        Context.LoggerProvider.info(`Socket server started on port ${this.port}.`);
+        Context.LoggerProvider.info(`[ CONN SVC ] Socket server started on port ${this.port}.`);
     }
 
     private onConnection(socket: io.Socket) {
         socket.emit(MessageTypes.IdRequest, (clientId: string) => {
-            Context.LoggerProvider.info(`Client [${clientId}] connected from [${socket.handshake.address}].`);
+            Context.LoggerProvider.info(`[ CONN SVC ] Client [${clientId}] connected from [${socket.handshake.address}].`);
             this.sockets.set(clientId, socket);
             Context.MessageProvider.registerMessenger(clientId, socket);
             socket.once('disconnect', (reason) => {
-                Context.LoggerProvider.debug(`Client [${clientId}] disconnected, reason: ${reason}.`);
+                Context.LoggerProvider.debug(`[ CONN SVC ] Client [${clientId}] disconnected, reason: ${reason}.`);
                 Context.MessageProvider.unregisterMessenger(clientId);
                 this.sockets.delete(clientId);
             });
