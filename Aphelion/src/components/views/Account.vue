@@ -1,9 +1,8 @@
 <template>
-  <div class="grid-container">
-    <div class="left">
-      <Parallax />
+  <div class="root">
+    <Parallax class="background" />
+    <div class="box">
     </div>
-    <div class="right" />
   </div>
 </template>
 
@@ -13,52 +12,46 @@ import Parallax from '@/components/Parallax';
 export default {
     name: 'Account',
     components: {
-        Parallax
+      Parallax
     },
     data() {
-        return {};
+        return {
+        };
+    },
+    methods: {
     }
 };
 </script>
 
 <style scoped>
-
-.grid-container {
-    display: grid;
-    grid-template-areas: 
-        "left right";
-        
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    height: 100%;
+.root {
+  width: 100%;
+  height: 100%;
 }
 
-@media only screen and (max-width: 600px) {
-    .grid-container {
-        display: grid;
-        grid-template-areas: 
-            "left"
-            "right";
-        grid-template-rows: 0.1fr 0.9fr;
-        grid-template-columns: 1fr;
-        width: 100%;
-        height: 100%;
-    }
+.background {
+  width: 100%;
+  height: 100%;
 }
 
-    .left {
-        grid-area: left;
-        background: #151D29;
-        width: 100%;
-        height: 100%;
-    }
+.box {
+  border-radius: 3px;
+  backdrop-filter: blur(3px);
+  font-family: "Roboto", sans-serif;   
+  position: absolute;
+  left: 30%;
+  top: 20%;
+  width: 40%;
+  height: 60%;
+  min-width: 166px;
+  min-height: 500px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.75);
+}
 
-    .right {
-        grid-area: right;
-        background: #0C8346;
-        width: 100%;
-        height: 100%;
-    }
+.hidden {
+  display: none;
+}
+
+
 
 </style>

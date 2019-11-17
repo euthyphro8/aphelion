@@ -29,18 +29,18 @@ class ParallaxRenderer {
         this.requestId = requestAnimationFrame(this.render.bind(this));
     }
 
-    private initStars(count: number) {
+    private initStars(count: number): void {
         for (let i = 0; i < count; i++) {
             this.stars[i] = new Star();
         }
     }
 
-    private registerEvents() {
+    private registerEvents(): void {
         document.addEventListener('mousemove', this.onMouseMoved.bind(this));
         window.addEventListener('resize', this.onResized.bind(this));
     }
 
-    private unRegisterEvents() {
+    private unRegisterEvents(): void {
         document.removeEventListener('mousemove', this.onMouseMoved.bind(this));
         window.removeEventListener('resize', this.onResized.bind(this));
     }
