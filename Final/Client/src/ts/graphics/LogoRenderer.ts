@@ -40,13 +40,19 @@ class LogoRenderer {
         }
         t -= 2;
         return c / 2 * (t * t * t + 2) + b;
+        // t /= d / 2;
+        // if (t < 1) {
+        //     return c / 2 * t * t + b;
+        // }
+        // t--;
+        // return -c / 2 * (t * (t - 2) - 1) + b;
     }
 
     private render(time: number): void {
         // Draws all stars
-        console.log(`time ${time}`);
-        this.scale = Math.abs(this.cubicEaseInOut(time % 3000, -1.0, 1.0, 3000));
-        console.log(`scale ${this.scale}`);
+        const cycleTime = 3000.0; // + (((time % 6000) / 6) - 500);
+        const smoothed = this.cubicEaseInOut(time % cycleTime, 0.0, 1.0, cycleTime);
+        this.scale = (time % (2.0 * cycleTime) > cycleTime) ? smoothed : 1.0 - smoothed;
 
         this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
         const width = this.context.canvas.width / 2;
@@ -56,7 +62,7 @@ class LogoRenderer {
         this.context.lineWidth = 20 * (Math.log((this.scale) * 60 + 10));
         this.context.beginPath();
         this.context.ellipse(width, height,
-            (height * 0.4) * this.scale, height * 0.8,// * (this.scale / 2.0 + 0.5),
+            (height * 0.4) * this.scale, height * 0.8, // * (this.scale / 2.0 + 0.5),
             0, Math.PI * (1 / 4), Math.PI * (3 / 4), true);
         this.context.stroke();
 

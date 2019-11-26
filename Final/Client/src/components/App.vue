@@ -1,8 +1,21 @@
 <template>
   <div id="app">
     <router-view />
+    <AboutLink />
+    <BackgroundMusic />
   </div>
 </template>
+
+<script>
+import AboutLink from '@/components/layout/about/AboutLink';
+import BackgroundMusic from '@/components/layout/BackgroundMusic';
+export default {
+  components: {
+      AboutLink,
+      BackgroundMusic
+  }
+}
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');

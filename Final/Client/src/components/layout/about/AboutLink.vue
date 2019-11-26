@@ -1,6 +1,6 @@
 <template>
   <div class="container"  v-on:click="onClick()">
-      <img src="@/assets/images/AboutIcon.png" alt="about">
+      <img src="@/assets/images/Info.svg" alt="about">
   </div>
 </template>
 
