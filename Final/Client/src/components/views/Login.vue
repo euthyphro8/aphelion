@@ -5,6 +5,7 @@
       <RegisterForm id="register" :class="{'hidden':!isRegistering}" @switch-form="switchForm"/>
       <LoginForm id="login" :class="{'hidden':isRegistering}" @switch-form="switchForm"/>
     </div>
+    <AboutLink />
   </div>
 </template>
 
@@ -12,13 +13,15 @@
 import Parallax from '@/components/Parallax';
 import RegisterForm from '@/components/layout/login/RegisterForm';
 import LoginForm from '@/components/layout/login/LoginForm';
+import AboutLink from '@/components/layout/about/AboutLink';
 
 export default {
     name: 'Login',
     components: {
       Parallax,
       RegisterForm,
-      LoginForm
+      LoginForm,
+      AboutLink
     },
     data() {
         return {

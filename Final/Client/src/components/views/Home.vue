@@ -7,7 +7,7 @@
       <Parallax />
       <img
         class="logo"
-        src="@/assets/LogoGrey.png"
+        src="@/assets/images/LogoGrey.png"
         alt="logo"
       >
     </div>

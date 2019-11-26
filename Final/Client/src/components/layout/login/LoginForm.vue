@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <img class="logo" src="@/assets/LogoGrey.png" alt="Logo">
+    <img class="logo" src="@/assets/images/LogoGrey.png" alt="Logo">
     <br>
     <p class="title">Login</p>
     <br>

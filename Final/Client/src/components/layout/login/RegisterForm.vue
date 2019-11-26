@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <img class="logo" src="@/assets/LogoGrey.png" alt="Logo"><br>
+    <img class="logo" src="@/assets/images/LogoGrey.png" alt="Logo"><br>
     <p class="title">Register</p><br>
     <form id="register-form" @submit="handleSubmit">
       <input v-model="username" type="text" placeholder="Username">

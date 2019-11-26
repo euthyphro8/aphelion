@@ -36,6 +36,7 @@ export default {
         margin: 1em 2em;
     }
     .logo {
+        padding-top: 10px;
         width: 100%;
         height: 30%;
     }
