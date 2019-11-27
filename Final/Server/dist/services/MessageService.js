@@ -9,6 +9,9 @@ class MessageService {
         this.authenticated = new Map();
         this.messengers = new Map();
     }
+    getActiveUsers() {
+        return this.messengers.size;
+    }
     registerMessenger(clientId, messenger) {
         this.messengers.set(clientId, messenger);
         messenger.on(MessageTypes_1.default.LoginRequest, this.onRequestLogin.bind(this));

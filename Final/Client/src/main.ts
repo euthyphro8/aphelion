@@ -10,7 +10,6 @@ import Client from '@/ts/coms/Client';
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-    console.log(`${from.name} => ${to.name}`);
     if (to.name !== 'login' && to.name !== 'about' && !store.state.authenticated) {
         next('/login');
     } else if (to.name === 'login' && store.state.authenticated) {
@@ -18,9 +17,9 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     }
+    next();
 });
 
-// store.state.
 
 new Vue({
     router,

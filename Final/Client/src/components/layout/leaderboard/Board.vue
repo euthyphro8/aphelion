@@ -3,10 +3,7 @@
     <Header :title="'LeaderBoards'" />
     <div class="entry-container">
       <div class="entry-header" />
-      <div
-        v-for="entry in entries"
-        :key="entry.id"
-      >
+      <div v-for="entry in entries" :key="entry.id">
         <BoardEntry :entry="entry" />
       </div>
     </div>

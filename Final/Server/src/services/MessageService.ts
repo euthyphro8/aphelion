@@ -19,6 +19,10 @@ class MessageService {
         this.messengers = new Map<string, io.Socket>();
     }
 
+    public getActiveUsers(): number {
+        return this.messengers.size;
+    }
+
     public registerMessenger(clientId: string, messenger: io.Socket): void {
         this.messengers.set(clientId, messenger);
         messenger.on(MessageTypes.LoginRequest, this.onRequestLogin.bind(this));

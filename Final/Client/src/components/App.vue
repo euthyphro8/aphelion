@@ -3,16 +3,21 @@
     <router-view />
     <AboutLink />
     <BackgroundMusic />
+    <PlayerCount />
   </div>
 </template>
 
 <script>
+
 import AboutLink from '@/components/layout/about/AboutLink';
 import BackgroundMusic from '@/components/layout/BackgroundMusic';
+import PlayerCount from '@/components/layout/PlayerCount';
+
 export default {
   components: {
       AboutLink,
-      BackgroundMusic
+      BackgroundMusic,
+      PlayerCount
   }
 }
 </script>

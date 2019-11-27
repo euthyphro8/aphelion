@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "AboutLink",
+    name: 'AboutLink',
     methods: {
         onClick: function() {
         this.$router.push(`/about`);

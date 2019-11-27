@@ -1,23 +1,24 @@
 <template>
-  <div class="grid-container">
-    <div class="left">
-      <Parallax />
-    </div>
-    <div class="right">
+  <div class="container">
+    <Parallax class="background" />
+    <div class="box">
       <Board :entries="entries" />
     </div>
   </div>
 </template>
 
 <script>
-import Board from '@/components/layout/leaderboard/Board';
 import Parallax from '@/components/Parallax';
+import Board from '@/components/layout/leaderboard/Board';
 
 export default {
     name: 'Leaderboard',
     components: {
         Board,
         Parallax
+    },
+    async mounted() {
+        
     },
     data() {
         return {
@@ -27,44 +28,28 @@ export default {
 };
 </script>
 
-<style scoped >
-
-.grid-container {
-    display: grid;
-    grid-template-areas: 
-        "left right";
-        
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    height: 100%;
+<style scoped>
+.container {
+  width: 100%;
+  height: 100%;
 }
 
-@media only screen and (max-width: 600px) {
-    .grid-container {
-        display: grid;
-        grid-template-areas: 
-            "left"
-            "right";
-        grid-template-rows: 0.1fr 0.9fr;
-        grid-template-columns: 1fr;
-        width: 100%;
-        height: 100%;
-    }
+.background {
+  width: 100%;
+  height: 100%;
 }
 
-    .left {
-        grid-area: left;
-        background: #151D29;
-        width: 100%;
-        height: 100%;
-    }
-
-    .right {
-        grid-area: right;
-        background: #0C8346;
-        width: 100%;
-        height: 100%;
-    }
+.box {
+  border-radius: 3px;
+  backdrop-filter: blur(3px);
+  position: absolute;
+  left: 20%;
+  top: 0%;
+  width: 60%;
+  height: 100%;
+  min-width: 166px;
+  min-height: 500px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.75);
+}
 
 </style>

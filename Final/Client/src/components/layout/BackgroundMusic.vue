@@ -2,28 +2,32 @@
   <div class="container"  v-on:click="onClick()">
       <img v-bind:class="{hidden: isMuted}" src="@/assets/images/MusicOn.svg" alt="Mute Catnip (c)">
       <img v-bind:class="{hidden: !isMuted}" src="@/assets/images/MusicOff.svg" alt="Mute Catnip (c)">
-      <audio v-bind:ref="'music'" autoplay loop src="/Catnip.mp3" type="audio/mp3"/>
+      <audio v-bind:ref="'music'"  muted="muted" autoplay loop src="/Catnip.mp3" type="audio/mp3"/>
   </div>
 </template>
 
 <script>
 export default {
-    name: "BackgroundMusic",    
+    name: 'BackgroundMusic',    
     data() {
         return {
-            isMuted: false
+            isMuted: false,
+            music: null
         };
     },
     methods: {
         onClick: function() {
             this.isMuted = !this.isMuted;
-        //     if(this.isMuted) {
-        //          this.$refs.music.muted = true;
-        //     }else {
-        //          this.$refs.music.muted = false;
-        //     }
+            if(this.isMuted) {
+                 this.$refs.music.pause();
+            }else {
+                 this.$refs.music.play();
+            }
         }
-  }
+    },
+    mounted: function() {
+        // this.$refs.music.play();
+    }
 }
 </script>
 

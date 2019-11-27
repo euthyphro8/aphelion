@@ -16,6 +16,7 @@ class ConnectionService {
     }
     start() {
         this.expressApp.use(express_1.default.static('public'));
+        this.expressApp.get('/stats', this.onGetStats.bind(this));
         this.ioServer.on('connect', this.onConnection.bind(this));
         this.httpServer.listen(this.port);
         AmbientContext_1.default.LoggerProvider.info(`[ CONN SVC ] Socket server started on port ${this.port}.`);
@@ -31,6 +32,9 @@ class ConnectionService {
                 this.sockets.delete(clientId);
             });
         });
+    }
+    onGetStats(request, response) {
+        response.send({ playerCount: 13 });
     }
 }
 exports.default = ConnectionService;

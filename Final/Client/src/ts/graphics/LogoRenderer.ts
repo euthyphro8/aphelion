@@ -49,7 +49,6 @@ class LogoRenderer {
     }
 
     private render(time: number): void {
-        // Draws all stars
         const cycleTime = 3000.0; // + (((time % 6000) / 6) - 500);
         const smoothed = this.cubicEaseInOut(time % cycleTime, 0.0, 1.0, cycleTime);
         this.scale = (time % (2.0 * cycleTime) > cycleTime) ? smoothed : 1.0 - smoothed;

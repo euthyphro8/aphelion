@@ -49,8 +49,9 @@ export default {
 
 .box {
   border-radius: 3px;
-  
   backdrop-filter: blur(3px);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.75);
+  
   font-family: "Roboto", sans-serif;   
   position: absolute;
   left: 30%;
@@ -60,7 +61,6 @@ export default {
   /* background: rgba(255, 255, 255, 0.3); */
   min-width: 166px;
   min-height: 500px;
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.75);
 }
 
 .hidden {

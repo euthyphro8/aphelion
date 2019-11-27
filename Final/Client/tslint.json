@@ -1,5 +1,4 @@
 {
-    "extends": "tslint:recommended",
     "rules": {
       "member-ordering": false,
       "no-console": false,

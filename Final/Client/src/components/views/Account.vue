@@ -1,18 +1,21 @@
 <template>
-  <div class="root">
+  <div class="container">
     <Parallax class="background" />
     <div class="box">
+      <AccountPage />
     </div>
   </div>
 </template>
 
 <script>
 import Parallax from '@/components/Parallax';
+import AccountPage from '@/components/layout/account/AccountPage';
 
 export default {
     name: 'Account',
     components: {
-      Parallax
+      Parallax,
+      AccountPage
     },
     data() {
         return {
@@ -24,7 +27,7 @@ export default {
 </script>
 
 <style scoped>
-.root {
+.container {
   width: 100%;
   height: 100%;
 }
@@ -37,7 +40,6 @@ export default {
 .box {
   border-radius: 3px;
   backdrop-filter: blur(3px);
-  font-family: "Roboto", sans-serif;   
   position: absolute;
   left: 30%;
   top: 20%;

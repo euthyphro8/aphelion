@@ -24,14 +24,15 @@ class ConnectionService {
         this.ioServer = io(this.httpServer);
     }
 
-    public start() {
+    public start(): void {
         this.expressApp.use(express.static('public'));
+        this.expressApp.get('/stats', this.onGetStats.bind(this));
         this.ioServer.on('connect', this.onConnection.bind(this));
         this.httpServer.listen(this.port);
         Context.LoggerProvider.info(`[ CONN SVC ] Socket server started on port ${this.port}.`);
     }
 
-    private onConnection(socket: io.Socket) {
+    private onConnection(socket: io.Socket): void {
         socket.emit(MessageTypes.IdRequest, (clientId: string) => {
             Context.LoggerProvider.info(`[ CONN SVC ] Client [${clientId}] connected from [${socket.handshake.address}].`);
             this.sockets.set(clientId, socket);
@@ -42,6 +43,10 @@ class ConnectionService {
                 this.sockets.delete(clientId);
             });
         });
+    }
+
+    private onGetStats(request: any, response: any): void {
+        response.send({ playerCount: 13 });
     }
 }
 

@@ -4,6 +4,9 @@ class GameService {
     constructor() {
         this.gamers = new Map();
     }
+    getPlayerCount() {
+        return this.gamers.size;
+    }
     registerGamer(clientId, gamer) {
         this.gamers.set(clientId, gamer);
     }

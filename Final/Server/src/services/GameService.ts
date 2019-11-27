@@ -8,6 +8,10 @@ class GameService {
         this.gamers = new Map<string, io.Socket>();
     }
 
+    public getPlayerCount(): number {
+        return this.gamers.size;
+    }
+
     public registerGamer(clientId: string, gamer: io.Socket): void {
         this.gamers.set(clientId, gamer);
     }

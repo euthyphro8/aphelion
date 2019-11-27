@@ -1,20 +1,10 @@
 <template>
   <div class="menu-box">
-    <div class="title">
-      Game
-    </div>
-    <div class="menu-item"  v-on:click="onClick('game')">
-      <p>Play</p>
-    </div>
-    <div class="menu-item"  v-on:click="onClick('account')">
-      <p>Account</p>
-    </div>
-    <div class="menu-item"  v-on:click="onClick('leaderboards')">
-      <p>Leaderboards</p>
-    </div>
-    <div class="menu-item"  v-on:click="onClick('about')">
-      <p>About</p>
-    </div>
+    <div class="title">Aphelion</div>
+    <div class="menu-item"  v-on:click="onClick('game')"><p>Play</p></div>
+    <div class="menu-item"  v-on:click="onClick('account')"><p>Account</p></div>
+    <div class="menu-item"  v-on:click="onClick('leaderboard')"><p>Leaderboards</p></div>
+    <!-- <div class="menu-item"  v-on:click="onClick('about')"><p>About</p></div> -->
   </div>
 </template>
 
@@ -33,44 +23,44 @@ export default {
 .menu-box {
   width: 100%;
   height: 100%;
+  
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: nowrap;
   align-items: center;
   flex-direction: column;
+  flex-grow: 1;
+}
+
+.title {
+  width: 100%;
+  padding: 5% 0;
+  
+  font-size: 10vmin;
+  font-weight: 900;
+  text-align: center;
+  color: #cccccc;
+  cursor: default;
 }
 
 .menu-item {
-  background: #0c8346;
-  font-weight: bolder;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu-item:hover {
   background: rgb(6, 99, 51);
 }
 
-a {
-  text-decoration: none;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
-
 p {
   font-size: 4vmin;
-  width: 100%;
+  font-weight: bolder;
   text-align: center;
   color: #cccccc;
+  cursor: default;
 }
 
-.title {
-  font-size: 10vmin;
-  font-weight: 900;
-  text-align: center;
-  color: #cccccc;
-  width: 100%;
-  height: 100%;
-}
 </style>

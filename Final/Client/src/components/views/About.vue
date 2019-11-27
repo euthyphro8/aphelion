@@ -40,7 +40,6 @@ export default {
 .box {
   border-radius: 3px;
   backdrop-filter: blur(3px);
-  font-family: "Roboto", sans-serif;   
   position: absolute;
   left: 20%;
   top: 0%;

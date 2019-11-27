@@ -1,15 +1,11 @@
 <template>
-  <div class="grid-container">
-    <div class="left">
-      <Menu />
-    </div>
+  <div class="container">
+    <Parallax />
     <div class="right">
-      <Parallax />
-      <img
-        class="logo"
-        src="@/assets/images/LogoGrey.png"
-        alt="logo"
-      >
+      <AnimatedLogo class="logo"/>
+    </div>
+    <div class="left">
+      <Menu/>
     </div>
   </div>
 </template>
@@ -17,62 +13,47 @@
 <script>
   import Menu from '@/components/layout/home/Menu';
   import Parallax from '@/components/Parallax';
+  import AnimatedLogo from '@/components/AnimatedLogo';
   
   export default {
     name: 'Home',
     components: {
       Menu,
-      Parallax
+      Parallax,
+      AnimatedLogo
     }
   };
 </script>
 
 <style scoped>
 
-.grid-container {
-    display: grid;
-    grid-template-areas: 
-        "left right";
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    height: 100%;
+.container {
+  width: 100%;
+  height: 100%;
 }
 
-@media only screen and (max-width: 600px) {
-    .grid-container {
-        display: grid;
-        grid-template-areas: 
-            "left"
-            "right";
-        grid-template-rows: 0.1fr 0.9fr;
-        grid-template-columns: 1fr;
-        width: 100%;
-        height: 100%;
-    }
+.left {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 3px;
+  backdrop-filter: blur(3px);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.75);
 }
 
-    .left {
-        grid-area: left;
-        background: #0C8346;
-        width: 100%;
-        height: 100%;
-    }
+.right {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+}
 
-    .right {
-        grid-area: right;
-        background: #151D29;
-        width: 100%;
-        height: 100%;
-    }
-
-    .logo {
-      position: absolute;
-      height: 50vh;
-      top: 25%;
-      width: 25%;
-      left: 62.5%;
-      /* left: 10px; */
-    }
+.logo {
+  width: 100%;
+  height: 100%;
+}
 
 </style>
