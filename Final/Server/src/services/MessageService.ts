@@ -8,6 +8,7 @@ import MessageTypes from '../utils/MessageTypes';
 import IUserInfo from '@/interfaces/IUserInfo';
 import IAccountInfo from '@/interfaces/IAccountInfo';
 import DatabaseReturnStatus from '../utils/DatabaseReturnStatus';
+import AmbientContext from './AmbientContext';
 
 class MessageService {
 
@@ -29,6 +30,7 @@ class MessageService {
         messenger.on(MessageTypes.RegisterRequest, this.onRequestRegister.bind(this));
         messenger.on(MessageTypes.AccountInfoRequest, this.onAccountInfoRequest.bind(this));
         messenger.on(MessageTypes.LeaderboardRequest, this.onLeaderBoardRequest.bind(this));
+        messenger.on(MessageTypes.RoomRequest, this.onRoomRequest.bind(this));
     }
 
     public unregisterMessenger(clientId: string): void {
@@ -38,6 +40,7 @@ class MessageService {
             messenger.off(MessageTypes.RegisterRequest, this.onRequestRegister.bind(this));
             messenger.off(MessageTypes.AccountInfoRequest, this.onAccountInfoRequest.bind(this));
             messenger.off(MessageTypes.LeaderboardRequest, this.onLeaderBoardRequest.bind(this));
+            messenger.off(MessageTypes.RoomRequest, this.onRoomRequest.bind(this));
             this.messengers.delete(clientId);
         }
     }
@@ -103,6 +106,17 @@ class MessageService {
             }
         }
         callback(undefined);
+    }
+    private async onRoomRequest(clientId: string, callback: (roomId: any) => void): Promise<void> {
+        Context.LoggerProvider.info(`[ MESG SVC ] Got room request, ${clientId}`);
+
+        // TODO This should use the authed users to avoid null exeptions
+        const roomId = AmbientContext.GameProvider.registerGamer(clientId, this.messengers.get(clientId)!);
+        callback(roomId);
+        // const user = this.authenticated.get(clientId);
+        // if (user) {
+        // }
+        // callback(undefined);
     }
 }
 

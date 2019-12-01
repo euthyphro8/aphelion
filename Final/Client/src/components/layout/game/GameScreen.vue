@@ -4,7 +4,7 @@
 
 <script>
 
-import GameRenderer from '@/ts/graphics/GameRenderer';
+import GameRenderer from '@/ts/graphics/game/GameRenderer';
 
 export default {
     name: 'GameScreen',
@@ -14,12 +14,18 @@ export default {
         }
     },
     mounted() {
-        const ctx = this.$refs['screen'].getContext('2d');
-        this.screen = new GameRenderer(ctx);
+        const ctx = this.$refs['screen'].getContext('2d', { alpha: false });
+        this.screen = new GameRenderer(ctx, this.$store.state.client);
         this.screen.start();
     },
     methods: {
 
+    },
+    beforeRouteLeave (to, from, next) { 
+        if(this.screen) {
+            this.screen.close();
+        }
+        next();
     }
 };
 </script>

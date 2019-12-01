@@ -23,7 +23,8 @@ export default {
         async getPlayerCount() {
             try {
                 const result = await axios.get('/stats');
-                console.log(`[PlayerCount] Got result from server. ${result}`);
+                console.log(`[PlayerCount] Got result from server. ${JSON.stringify(result)}`);
+                this.count = result.playerCount;
             } catch(error) {
                 console.log('[PlayerCount] Fetch failed.');
                 this.stopRefresh();

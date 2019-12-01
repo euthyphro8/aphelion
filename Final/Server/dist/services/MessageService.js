@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const AmbientContext_1 = tslib_1.__importDefault(require("./AmbientContext"));
 const MessageTypes_1 = tslib_1.__importDefault(require("../utils/MessageTypes"));
 const DatabaseReturnStatus_1 = tslib_1.__importDefault(require("../utils/DatabaseReturnStatus"));
+const AmbientContext_2 = tslib_1.__importDefault(require("./AmbientContext"));
 class MessageService {
     constructor() {
         this.authenticated = new Map();
@@ -18,6 +19,7 @@ class MessageService {
         messenger.on(MessageTypes_1.default.RegisterRequest, this.onRequestRegister.bind(this));
         messenger.on(MessageTypes_1.default.AccountInfoRequest, this.onAccountInfoRequest.bind(this));
         messenger.on(MessageTypes_1.default.LeaderboardRequest, this.onLeaderBoardRequest.bind(this));
+        messenger.on(MessageTypes_1.default.RoomRequest, this.onRoomRequest.bind(this));
     }
     unregisterMessenger(clientId) {
         const messenger = this.messengers.get(clientId);
@@ -26,6 +28,7 @@ class MessageService {
             messenger.off(MessageTypes_1.default.RegisterRequest, this.onRequestRegister.bind(this));
             messenger.off(MessageTypes_1.default.AccountInfoRequest, this.onAccountInfoRequest.bind(this));
             messenger.off(MessageTypes_1.default.LeaderboardRequest, this.onLeaderBoardRequest.bind(this));
+            messenger.off(MessageTypes_1.default.RoomRequest, this.onRoomRequest.bind(this));
             this.messengers.delete(clientId);
         }
     }
@@ -92,6 +95,13 @@ class MessageService {
                 }
             }
             callback(undefined);
+        });
+    }
+    onRoomRequest(clientId, callback) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Got room request, ${clientId}`);
+            const roomId = AmbientContext_2.default.GameProvider.registerGamer(clientId, this.messengers.get(clientId));
+            callback(roomId);
         });
     }
 }

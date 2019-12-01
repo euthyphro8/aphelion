@@ -29,12 +29,13 @@ class ConnectionService {
             socket.once('disconnect', (reason) => {
                 AmbientContext_1.default.LoggerProvider.debug(`[ CONN SVC ] Client [${clientId}] disconnected, reason: ${reason}.`);
                 AmbientContext_1.default.MessageProvider.unregisterMessenger(clientId);
+                AmbientContext_1.default.GameProvider.unregisterGamer(clientId);
                 this.sockets.delete(clientId);
             });
         });
     }
     onGetStats(request, response) {
-        response.send({ playerCount: 13 });
+        response.send({ playerCount: AmbientContext_1.default.GameProvider.getPlayerCount() });
     }
 }
 exports.default = ConnectionService;

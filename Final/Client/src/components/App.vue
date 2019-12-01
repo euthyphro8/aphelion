@@ -2,7 +2,7 @@
   <div id="app">
     <router-view />
     <AboutLink />
-    <BackgroundMusic />
+    <!-- <BackgroundMusic /> -->
     <PlayerCount />
   </div>
 </template>

@@ -5,10 +5,12 @@ import uuid from 'uuid';
 
 import MessageTypes from '@/ts/coms/MessageTypes';
 import IUserInfo from '@/ts/interfaces/ui/IUserInfo';
+import IEntity from '@/ts/interfaces/IEntity';
 
 class Client {
 
     private id: string;
+    private roomId: string;
     private socket: SocketIOClient.Socket;
     private connected: boolean;
 
@@ -24,6 +26,7 @@ class Client {
             callback(this.id);
         });
         this.socket.connect();
+        this.roomId = '';
     }
 
     private onConnected(): void {
@@ -52,7 +55,6 @@ class Client {
      */
     public requestRegister(username: string, email: string, password: string): Promise<boolean> {
         return this.createRequest(MessageTypes.RegisterRequest, username, email, password);
-        // this.socket.emit(MessageTypes.RegisterRequest, this.id, username, email, password)
     }
 
     /**
@@ -69,6 +71,13 @@ class Client {
         return this.createRequest(MessageTypes.AccountInfoRequest);
     }
 
+    /**
+     *
+     */
+    public requestRoom(): Promise<string> {
+        return this.createRequest(MessageTypes.RoomRequest);
+    }
+
     private createRequest<T>(type: MessageTypes, ...params: any[]): Promise<T> {
         const promise = new Promise<T>((resolve, reject) => {
             try {
@@ -82,6 +91,22 @@ class Client {
             }
         });
         return promise;
+    }
+
+    public subscribeToRoom(callback: (entities: [string, IEntity][]) => void): void {
+        this.requestRoom().then((roomId) => {
+            console.log(`[ Client ] Subscribed to room ${roomId}.`);
+            this.socket.on(MessageTypes.ServerTick, callback);
+        });
+    }
+
+    public unSubscribeToRoom(callback: (entities: [string, IEntity][]) => void): void {
+        this.socket.emit(MessageTypes.LeaveRoomRequest, this.id);
+        this.socket.off(MessageTypes.ServerTick, callback);
+    }
+
+    public sendClientTick(entity: IEntity) {
+        this.socket.emit(MessageTypes.ClientTick, this.id, entity);
     }
 }
 

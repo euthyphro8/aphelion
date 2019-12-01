@@ -9,9 +9,10 @@ import Context from './AmbientContext';
 import MessageTypes from '../utils/MessageTypes';
 
 class ConnectionService {
+    public ioServer: io.Server;
+
     private expressApp: any; // Express.Application; not sure why the type doesn't work for this
     private httpServer: http.Server;
-    private ioServer: io.Server;
     private port: string;
 
     private sockets: Map<string, io.Socket>;
@@ -40,13 +41,14 @@ class ConnectionService {
             socket.once('disconnect', (reason) => {
                 Context.LoggerProvider.debug(`[ CONN SVC ] Client [${clientId}] disconnected, reason: ${reason}.`);
                 Context.MessageProvider.unregisterMessenger(clientId);
+                Context.GameProvider.unregisterGamer(clientId);
                 this.sockets.delete(clientId);
             });
         });
     }
 
     private onGetStats(request: any, response: any): void {
-        response.send({ playerCount: 13 });
+        response.send({ playerCount: Context.GameProvider.getPlayerCount() });
     }
 }
 
