@@ -1,4 +1,4 @@
-
+import { config } from 'dotenv';
 import LoggerService from './services/LoggerService';
 import MessageService from './services/MessageService';
 import CryptoService from './services/CryptoService';
@@ -7,9 +7,18 @@ import AmbientContext from './services/AmbientContext';
 import ConnectionService from './services/ConnectionService';
 import GameService from './services/GameService';
 
+// Gets the env vars from the .env file
+config();
+
+// Loads in a mongodb uri string if it is specified
+let mongodbUri = 'mongodb://localhost:27017';
+if (process.env.MONGO_URI) {
+    mongodbUri = process.env.MONGO_URI as string;
+}
+
 // Initialization of all Micro Services
 const logger = new LoggerService('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 10 * 1024 * 1024);
-const dbCtx = new DatabaseService('mongodb://localhost:27017', 'local', 'accounts');
+const dbCtx = new DatabaseService(mongodbUri, 'local', 'accounts');
 const crypto = new CryptoService(10);
 const server = new ConnectionService('3000', 'path');
 const messenger = new MessageService();

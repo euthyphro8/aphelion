@@ -16,8 +16,7 @@ class DatabaseService {
                 if (!this.client) {
                     AmbientContext_1.default.LoggerProvider.info('[ DTBS SVC ] Connecting to database instance.');
                     this.client = yield mongodb_1.MongoClient.connect(this.dbUrl, {
-                        useNewUrlParser: true,
-                        useUnifiedTopology: true
+                        useNewUrlParser: true
                     });
                     AmbientContext_1.default.LoggerProvider.info(`[ DTBS SVC ] Connected to mongodb server.`);
                     this.database = this.client.db(this.dbName);
