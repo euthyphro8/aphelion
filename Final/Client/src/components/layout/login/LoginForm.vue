@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     handleSubmit: async function (event) {
+      event.preventDefault();
       this.disabled = true;
       console.log(`[Login] Got login submit. ${this.humanId} ${this.password}`);
       const validEmail = Validator.VerifyEmail(this.humanId);
@@ -57,6 +58,7 @@ export default {
             this.status = 'Invalid login credentials.'
           }
       }
+      return false;
     }
   }
 };

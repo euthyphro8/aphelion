@@ -13,25 +13,26 @@ export default {
     data() {
         return {
             count: 0,
-            refreshId: 0
+            refreshId: null
         };
     },
     mounted: function() {
-        this.refreshId = setInterval(this.getPlayerCount.bind(this), 3000);
+        this.refreshId = setInterval(this.getPlayerCount.bind(this), 5000);
     },
     methods: {
         async getPlayerCount() {
             try {
                 const result = await axios.get('/stats');
-                console.log(`[PlayerCount] Got result from server. ${JSON.stringify(result)}`);
-                this.count = result.playerCount;
+                console.log(`[PlayerCount] Got stats from fetch.`);
+                this.count = result.data.playerCount;
             } catch(error) {
-                console.log('[PlayerCount] Fetch failed.');
+                console.log('[PlayerCount] Stats fetch failed.');
                 this.stopRefresh();
             }
         },
         stopRefresh() {
-            clearInterval(this.refreshId);
+            if(this.refreshId)
+                clearInterval(this.refreshId);
         }
     }
 }

@@ -21,8 +21,14 @@ class ConnectionService {
         this.port = process.env.PORT || port;
         this.sockets = new Map<string, io.Socket>();
         this.expressApp = express();
+
+        const httpOptions: http.ServerOptions = {
+            // key: fs.readFileSync('server-key.pem'),
+            // cert: fs.readFileSync('server-certifcate.pem')
+        };
         this.httpServer = http.createServer(this.expressApp);
-        this.ioServer = io(this.httpServer);
+        const options: io.ServerOptions = {};
+        this.ioServer = io(this.httpServer, options);
     }
 
     public start(): void {

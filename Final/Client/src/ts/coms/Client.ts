@@ -2,6 +2,7 @@
 
 import io from 'socket.io-client';
 import uuid from 'uuid';
+// import certificate from 'cert';
 
 import MessageTypes from '@/ts/coms/MessageTypes';
 import IUserInfo from '@/ts/interfaces/ui/IUserInfo';
@@ -9,7 +10,7 @@ import IEntity from '@/ts/interfaces/IEntity';
 
 class Client {
 
-    private id: string;
+    public id: string;
     private roomId: string;
     private socket: SocketIOClient.Socket;
     private connected: boolean;
@@ -18,9 +19,11 @@ class Client {
         this.id = uuid.v4();
         this.connected = false;
         const options: SocketIOClient.ConnectOpts = {
-            autoConnect: false
+            autoConnect: false,
+            // ca: fs.readFileSync('server-certifcate.pem').toString(),
+            // ca: certificate,
         };
-        this.socket = io('http://localhost:3000', options);
+        this.socket = io('/', options);
         this.socket.on('connect', this.onConnected.bind(this));
         this.socket.on(MessageTypes.IdRequest, (callback: (clientId: string) => void) => {
             callback(this.id);

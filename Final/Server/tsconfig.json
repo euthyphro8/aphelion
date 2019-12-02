@@ -18,7 +18,8 @@
       ]
     },
     "types": [
-      "node"
+      "node",
+      "express"
     ],
     "typeRoots": [
       "node_modules/@types"
@@ -26,6 +27,7 @@
   },
   "include": [
     "src/**/*",
-    "public"
+    "public",
+    "Assets/tls/*.pem"
   ]
 }

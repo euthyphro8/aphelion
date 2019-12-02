@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     handleSubmit: async function(event) {
+      event.preventDefault();
       this.disabled = true;
       console.log('[Register] Got register submit.');
       const validEmail = Validator.VerifyEmail(this.email);
@@ -64,6 +65,7 @@ export default {
           this.status = 'Passwords must match';
         }
       }
+      return false;
     }
   }
 };
