@@ -1,8 +1,10 @@
 
 interface IEntity {
+    name: string;
     x: number;
     y: number;
-    hp: number;
+    shieldTime: number;
+    rechargeTime: number;
 }
 
 export default IEntity;

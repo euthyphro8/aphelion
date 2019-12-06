@@ -15,21 +15,14 @@ class ConnectionService {
     private expressApp: any; // Express.Application; not sure why the type doesn't work for this
     private httpServer: http.Server;
     private port: string;
-
     private sockets: Map<string, io.Socket>;
 
     constructor(port: string, path: string) {
         this.port = process.env.PORT || port;
         this.sockets = new Map<string, io.Socket>();
         this.expressApp = express();
-
-        const httpOptions: http.ServerOptions = {
-            // key: fs.readFileSync('server-key.pem'),
-            // cert: fs.readFileSync('server-certifcate.pem')
-        };
         this.httpServer = http.createServer(this.expressApp);
-        const options: io.ServerOptions = {};
-        this.ioServer = io(this.httpServer, options);
+        this.ioServer = io(this.httpServer);
     }
 
     public start(): void {

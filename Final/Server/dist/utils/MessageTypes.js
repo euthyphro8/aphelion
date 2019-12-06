@@ -11,6 +11,7 @@ var MessageTypes;
     MessageTypes["LeaveRoomRequest"] = "LEV_REQ";
     MessageTypes["ClientTick"] = "CLI_TIC";
     MessageTypes["ServerTick"] = "SRV_TIC";
+    MessageTypes["ClientDied"] = "CLI_DED";
 })(MessageTypes || (MessageTypes = {}));
 exports.default = MessageTypes;
 //# sourceMappingURL=MessageTypes.js.map

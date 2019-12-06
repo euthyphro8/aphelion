@@ -1,10 +1,8 @@
 
 import io from 'socket.io';
-import IEntity from '@/interfaces/IEntity';
 import MessageTypes from '../utils/MessageTypes';
 import GameRoom from '../utils/GameRoom';
 import AmbientContext from './AmbientContext';
-import IUserInfo from '@/interfaces/IUserInfo';
 import IAccountInfo from '@/interfaces/IAccountInfo';
 
 class GameService {
@@ -63,6 +61,7 @@ class GameService {
                     break;
                 }
             }
+
             // Stop the ticks if no clients are playing
             if (this.gamers.size === 0 && this.requestId) {
                 clearInterval(this.requestId!);

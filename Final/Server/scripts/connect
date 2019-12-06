@@ -1,1 +1,0 @@
-gcloud beta compute --project "aphelion" ssh --zone "us-west1-c" "aphelion"

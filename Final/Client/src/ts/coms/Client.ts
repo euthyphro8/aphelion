@@ -5,9 +5,10 @@ import uuid from 'uuid';
 // import certificate from 'cert';
 
 import MessageTypes from '@/ts/coms/MessageTypes';
-import IUserInfo from '@/ts/interfaces/ui/IUserInfo';
+import IUserInfo from '@/ts/interfaces/IUserInfo';
 import IEntity from '@/ts/interfaces/IEntity';
 import { Z_UNKNOWN } from 'zlib';
+import IHazard from '../interfaces/IHazard';
 
 class Client {
 
@@ -97,17 +98,19 @@ class Client {
         return promise;
     }
 
-    public subscribeToRoom(callback: (entities: [string, IEntity][]) => void): Promise<string> {
+    public subscribeToRoom(tickCallback: (hazard: IHazard, entities: [string, IEntity][]) => void,  deathCallback: (username: string) => void): Promise<string> {
         return this.requestRoom().then((roomId) => {
             console.log(`[ Client ] Subscribed to room ${roomId}.`);
-            this.socket.on(MessageTypes.ServerTick, callback);
+            this.socket.on(MessageTypes.ServerTick, tickCallback);
+            this.socket.on(MessageTypes.ClientDied, deathCallback);
             return roomId
         });
     }
 
-    public unSubscribeToRoom(username: string, finalScore: number, callback: (entities: [string, IEntity][]) => void): void {
+    public unSubscribeToRoom(username: string, finalScore: number, tickCallback: (hazard: IHazard, entities: [string, IEntity][]) => void,  deathCallback: (username: string) => void): void {
         this.socket.emit(MessageTypes.LeaveRoomRequest, this.id, username, finalScore);
-        this.socket.off(MessageTypes.ServerTick, callback);
+        this.socket.off(MessageTypes.ServerTick, tickCallback);
+        this.socket.on(MessageTypes.ClientDied, deathCallback);
     }
 
     public sendClientTick(entity: IEntity) {

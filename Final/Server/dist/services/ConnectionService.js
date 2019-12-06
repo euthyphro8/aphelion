@@ -11,10 +11,8 @@ class ConnectionService {
         this.port = process.env.PORT || port;
         this.sockets = new Map();
         this.expressApp = express_1.default();
-        const httpOptions = {};
         this.httpServer = http_1.default.createServer(this.expressApp);
-        const options = {};
-        this.ioServer = socket_io_1.default(this.httpServer, options);
+        this.ioServer = socket_io_1.default(this.httpServer);
     }
     start() {
         this.expressApp.use(express_1.default.static('public'));

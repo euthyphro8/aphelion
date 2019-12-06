@@ -6,13 +6,13 @@
 
 <script>
 
-import GameRenderer from '@/ts/graphics/game/GameRenderer';
+import Game from '@/ts/graphics/game/Game';
 
 export default {
     name: 'GameScreen',
     data() {
         return {
-            screen: null,
+            game: null,
             widthBias: false
         }
     },
@@ -21,20 +21,21 @@ export default {
         const client = this.$store.state.client;
         client.requestAccountInfo().then((user) => {
             const ctx = this.$refs['screen'].getContext('2d', { alpha: false });
-            this.screen = new GameRenderer(ctx, client, user);    
-            this.screen.start();
+            this.game = new Game(ctx, client, user);
+            this.game.once('close', this.onShuttingDown);
+            this.game.start();
         });
         this.onResize(null);
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.onResize);
-        if(this.screen) {
-            this.screen.close();
+        if(this.game) {
+            this.game.close();
         }
     },
     beforeRouteLeave (to, from, next) { 
-        if(this.screen) {
-            this.screen.close();
+        if(this.game) {
+            this.game.close();
         }
         next();
     },
@@ -43,6 +44,9 @@ export default {
             let w = this.$refs['container'].clientWidth; 
             let h = this.$refs['container'].clientHeight;
             this.widthBias = (h > (w / 16 * 9));
+        },
+        onShuttingDown() {
+            this.$router.push(`/`);
         }
     },
 };

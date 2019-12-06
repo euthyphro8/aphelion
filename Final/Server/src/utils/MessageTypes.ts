@@ -10,6 +10,7 @@ enum MessageTypes {
 
     ClientTick = 'CLI_TIC',
     ServerTick = 'SRV_TIC',
+    ClientDied = 'CLI_DED',
 }
 
 export default MessageTypes;

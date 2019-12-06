@@ -9,7 +9,7 @@ export default {
     name: 'AboutLink',
     methods: {
         onClick: function() {
-        this.$router.push(`/about`);
+            this.$router.push(`/about`);
         }
   }
 }
