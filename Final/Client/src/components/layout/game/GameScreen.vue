@@ -28,12 +28,14 @@ export default {
         this.onResize(null);
     },
     beforeDestroy() {
+            console.log('before destroy');
         window.removeEventListener('resize', this.onResize);
         if(this.game) {
             this.game.close();
         }
     },
     beforeRouteLeave (to, from, next) { 
+            console.log('before route leave');f
         if(this.game) {
             this.game.close();
         }
@@ -46,6 +48,7 @@ export default {
             this.widthBias = (h > (w / 16 * 9));
         },
         onShuttingDown() {
+            console.log('on shutting down');
             this.$router.push(`/`);
         }
     },

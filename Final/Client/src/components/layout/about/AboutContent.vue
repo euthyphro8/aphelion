@@ -3,10 +3,12 @@
       <AnimatedLogo class="logo"/>
       <p class="title">Technologies</p>
       <div class="lib-box">
-        <img class ="lib-logo" src="@/assets/images/libraries/ts.png" />
         <img class ="lib-logo" src="@/assets/images/libraries/node.png" />
-        <img class ="lib-logo" src="@/assets/images/libraries/babel.png" />
         <img class ="lib-logo" src="@/assets/images/libraries/vue.png" />
+        <img class ="lib-logo" src="@/assets/images/libraries/ts.png" />
+        <img class ="lib-logo" src="@/assets/images/libraries/compute.png" />
+        <img class ="lib-logo" src="@/assets/images/libraries/nginx.png" />
+        <img class ="lib-logo" src="@/assets/images/libraries/axios.png" />
         <img class ="lib-logo" src="@/assets/images/libraries/socket-io.png" />
         <img class ="lib-logo" src="@/assets/images/libraries/mongodb.png" />
         <img class ="lib-logo" src="@/assets/images/libraries/bcrypt.png" />

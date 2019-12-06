@@ -16,7 +16,7 @@ class Renderer {
         if(entity.shieldTime > 0) {
             context.fillStyle = '#48d';
             context.moveTo(entity.x, entity.y);
-            context.ellipse(entity.x, entity.y, 50, 50, 0, 0, 2 * Math.PI);
+            context.ellipse(entity.x, entity.y, 30, 30, 0, 0, 2 * Math.PI);
         }
     }
 
@@ -32,7 +32,7 @@ class Renderer {
             context.beginPath();
             context.strokeStyle = '#cccccc';
             context.lineWidth = 5;
-            context.arc(entity.x, entity.y, 40, 0, 2 * Math.PI * (entity.rechargeTime / EntityConstants.rechargeTime));
+            context.arc(entity.x, entity.y, 35, 0, 2 * Math.PI * (entity.rechargeTime / EntityConstants.rechargeTime));
             context.stroke();
         }
     }

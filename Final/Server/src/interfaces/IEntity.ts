@@ -5,6 +5,7 @@ interface IEntity {
     y: number;
     shieldTime: number;
     rechargeTime: number;
+    blockedThisShield: boolean;
 }
 
 export default IEntity;

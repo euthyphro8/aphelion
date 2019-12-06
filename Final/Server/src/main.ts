@@ -18,9 +18,9 @@ if (process.env.MONGO_URI) {
 
 // Initialization of all Micro Services
 const logger = new LoggerService('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 10 * 1024 * 1024);
-const dbCtx = new DatabaseService(mongodbUri, 'local', 'accounts');
+const dbCtx = new DatabaseService(mongodbUri, 'aphelion', 'users');
 const crypto = new CryptoService(10);
-const server = new ConnectionService('3000', 'path');
+const server = new ConnectionService('3000');
 const messenger = new MessageService();
 const game = new GameService();
 

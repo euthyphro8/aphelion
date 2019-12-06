@@ -17,7 +17,7 @@ class ConnectionService {
     private port: string;
     private sockets: Map<string, io.Socket>;
 
-    constructor(port: string, path: string) {
+    constructor(port: string) {
         this.port = process.env.PORT || port;
         this.sockets = new Map<string, io.Socket>();
         this.expressApp = express();

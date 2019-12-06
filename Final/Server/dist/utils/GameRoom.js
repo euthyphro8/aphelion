@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const MessageTypes_1 = tslib_1.__importDefault(require("../utils/MessageTypes"));
+const AmbientContext_1 = tslib_1.__importDefault(require("../services/AmbientContext"));
 class GameRoom {
     constructor(server, roomId) {
         this.hAccel = 1.1;
@@ -23,7 +24,7 @@ class GameRoom {
     }
     addToRoom(clientId, socket) {
         if (this.entities.size < 10) {
-            const entity = { x: 0, y: 0, name: 'New User', rechargeTime: 0, shieldTime: 0 };
+            const entity = { x: 0, y: 0, name: 'New User', rechargeTime: 0, shieldTime: 0, blockedThisShield: false };
             this.entities.set(clientId, entity);
             socket.join(this.roomId);
             socket.on(MessageTypes_1.default.ClientTick, this.onClientTick.bind(this));
@@ -33,16 +34,18 @@ class GameRoom {
     }
     removeFromRoom(clientId, socket) {
         if (this.entities.has(clientId)) {
-            console.log('removed from room');
             this.entities.delete(clientId);
             socket.leave(this.roomId);
             socket.off(MessageTypes_1.default.ClientTick, this.onClientTick.bind(this));
+            if (this.entities.size <= 0) {
+                this.reset();
+            }
             return true;
         }
         return false;
     }
     tick() {
-        if (this.hasPlayers()) {
+        if (this.entities.size > 0) {
             this.updateHazard();
             this.checkCollisions();
             this.server.in(this.roomId).emit(MessageTypes_1.default.ServerTick, this.hazard, Array.from(this.entities));
@@ -52,6 +55,7 @@ class GameRoom {
         }
     }
     reset() {
+        AmbientContext_1.default.LoggerProvider.debug(`[GameRoom] Room ${this.roomId} reset.`);
         this.hazard = {
             x: 1920 / 2,
             y: 1080 / 2,
@@ -93,12 +97,22 @@ class GameRoom {
     }
     checkCollisions() {
         this.entities.forEach((entity) => {
-            if (entity.shieldTime <= 0) {
-                const d1 = this.distance2(this.hazard.x, this.hazard.y, entity.x, entity.y);
-                const d2 = (50 + this.hazard.size) * (50 + this.hazard.size);
-                if (d1 < d2) {
+            const d1 = this.distance2(this.hazard.x, this.hazard.y, entity.x, entity.y);
+            const d2 = (30 + this.hazard.size) * (30 + this.hazard.size);
+            if (d1 < d2) {
+                if (entity.shieldTime > 0) {
+                    if (!entity.blockedThisShield) {
+                        this.hdx = -(this.hdx * this.hAccel);
+                        this.hdy = -(this.hdy * this.hAccel);
+                        entity.blockedThisShield = true;
+                    }
+                }
+                else {
                     this.server.in(this.roomId).emit(MessageTypes_1.default.ClientDied, entity.name);
                 }
+            }
+            if (entity.shieldTime <= 0) {
+                entity.blockedThisShield = false;
             }
         });
     }

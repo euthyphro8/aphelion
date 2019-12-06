@@ -40,12 +40,12 @@ class GameService {
     unregisterGamer(clientId) {
         const gamer = this.gamers.get(clientId);
         if (gamer) {
-            this.gamers.delete(clientId);
             for (const room of this.rooms) {
                 if (room.removeFromRoom(clientId, gamer)) {
                     break;
                 }
             }
+            this.gamers.delete(clientId);
             if (this.gamers.size === 0 && this.requestId) {
                 clearInterval(this.requestId);
                 this.requestId = null;
@@ -53,6 +53,7 @@ class GameService {
         }
     }
     onLeaveRoomRequest(clientId, username, finalScore) {
+        AmbientContext_1.default.LoggerProvider.info(`[GameRoom] Got leave room request from ${clientId}.`);
         AmbientContext_1.default.DatabaseProvider.getAccount(username, false).then((account) => {
             if (account) {
                 account.score += finalScore;

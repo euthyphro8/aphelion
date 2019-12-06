@@ -15,9 +15,9 @@ if (process.env.MONGO_URI) {
     mongodbUri = process.env.MONGO_URI;
 }
 const logger = new LoggerService_1.default('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 10 * 1024 * 1024);
-const dbCtx = new DatabaseService_1.default(mongodbUri, 'local', 'accounts');
+const dbCtx = new DatabaseService_1.default(mongodbUri, 'aphelion', 'users');
 const crypto = new CryptoService_1.default(10);
-const server = new ConnectionService_1.default('3000', 'path');
+const server = new ConnectionService_1.default('3000');
 const messenger = new MessageService_1.default();
 const game = new GameService_1.default();
 AmbientContext_1.default.LoggerProvider = logger;

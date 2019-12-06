@@ -19,11 +19,12 @@ class Player {
         this.rightPressed = false;
         this.spacePressed = false;
         this.entity = {
+            name,
             x: 100,
             y: 100,
             rechargeTime: 0,
             shieldTime: 0,
-            name
+            blockedThisShield: false
         };
     }
 

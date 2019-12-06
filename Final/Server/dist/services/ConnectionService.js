@@ -7,7 +7,7 @@ const socket_io_1 = tslib_1.__importDefault(require("socket.io"));
 const AmbientContext_1 = tslib_1.__importDefault(require("./AmbientContext"));
 const MessageTypes_1 = tslib_1.__importDefault(require("../utils/MessageTypes"));
 class ConnectionService {
-    constructor(port, path) {
+    constructor(port) {
         this.port = process.env.PORT || port;
         this.sockets = new Map();
         this.expressApp = express_1.default();

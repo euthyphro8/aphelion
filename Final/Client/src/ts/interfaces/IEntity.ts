@@ -1,9 +1,9 @@
 
 enum EntityConstants {
-    shieldTime = 500,
+    shieldTime = 600,
     rechargeTime = 500,
     size = 50,
-    speed = 10
+    speed = 13
 }
 export { EntityConstants };
 
@@ -13,6 +13,7 @@ interface IEntity {
     y: number;
     shieldTime: number;
     rechargeTime: number;
+    blockedThisShield: boolean;
 }
 
 export default IEntity;
