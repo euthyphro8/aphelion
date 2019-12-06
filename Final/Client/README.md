@@ -1,29 +1,11 @@
-# aphelion
+# Aphelion
 
-## Project setup
-```
-yarn install
-```
+Aphelion is a web app made for a school project. The purpose of the app was to explore and gain a better understanding of web backend development. The web app is centered around a simple game concept. Essentially it works as reverse pong where you try you're hardest to not let the ball hit you. However, the game is more-so to have an objective for the backend which includes..
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+ * Encrypted communication using socket.io and nginx.
+ * A login system, using bcrypt for storing passwords. 
+ * A leaderboard system a database hosted with mongodb atlas. 
+ * An account system using mongodb and gravatar to display personal information (provided it's been provided).
+ * Nice global graphics and music to enrich the whole experience (music togglable of course).
+ 
+ Enjoy!
