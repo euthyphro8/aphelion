@@ -18,7 +18,15 @@ export default {
         Parallax
     },
     async mounted() {
-        
+        const client = this.$store.state.client;
+        try {
+          const users = await client.requestLeaderBoards();
+          console.log('[Leaderboard] Got leaderboard request back from server.');
+          this.entries = users;
+        }
+        catch(error) {
+          // TODO Set status message.
+        }
     },
     data() {
         return {

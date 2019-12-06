@@ -102,10 +102,9 @@ class DatabaseService {
                 yield this.connect();
             }
             try {
-                const cursor = yield this.collection.find({});
+                const raw = yield this.collection.find({}).toArray();
                 const accounts = [];
-                while (cursor.hasNext()) {
-                    const account = yield cursor.next();
+                for (const account of raw) {
                     if (account) {
                         accounts.push(account);
                     }

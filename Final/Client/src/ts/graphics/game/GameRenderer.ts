@@ -3,6 +3,7 @@ import Player from '@/ts/graphics/game/Player';
 import Client from '@/ts/coms/Client';
 import IEntity from '@/ts/interfaces/IEntity';
 import EntityRenderer from '@/ts/graphics/game/EntityRenderer';
+import IHazard from '@/ts/interfaces/IHazard';
 
 class GameRenderer {
 
@@ -10,6 +11,7 @@ class GameRenderer {
     private entities: Map<string, IEntity>;
     private client: Client;
     private player: Player;
+    private hazard: IHazard;
 
     private requestId: number;
     private accumTime: number;
@@ -19,8 +21,13 @@ class GameRenderer {
     constructor(ctx: CanvasRenderingContext2D, client: Client) {
         this.context = ctx;
         this.client = client;
-        this.player = new Player();
+        this.player = new Player('Name');
         this.entities = new Map<string, IEntity>();
+        this.hazard = {
+            x: 1920 / 2,
+            y: 1080 / 2,
+            size: 70
+        };
         
         this.requestId = -1;
         this.lastTime = 0.0;
@@ -29,7 +36,8 @@ class GameRenderer {
     }
 
     public start(): void {
-        this.onResized();
+        this.context.canvas.width = 1920;
+        this.context.canvas.height = 1080;
         this.registerEvents();
     }
     
@@ -38,7 +46,6 @@ class GameRenderer {
     }
 
     private registerEvents(): void {
-        window.addEventListener('resize', this.onResized.bind(this));
         this.player.registerEvents();
         this.requestId = requestAnimationFrame(this.tick.bind(this));
         this.client.subscribeToRoom(this.onServerTick.bind(this));
@@ -48,12 +55,6 @@ class GameRenderer {
         this.client.unSubscribeToRoom(this.onServerTick.bind(this));
         cancelAnimationFrame(this.requestId);
         this.player.unRegisterEvents();
-        window.removeEventListener('resize', this.onResized.bind(this));
-    }
-
-    private onResized(): void {
-        this.context.canvas.width = this.context.canvas.clientWidth * 2;
-        this.context.canvas.height = this.context.canvas.clientHeight * 2;
     }
 
     private onServerTick(entities: [string, IEntity][]): void {
@@ -67,7 +68,7 @@ class GameRenderer {
         this.accumTime += delta;
         if(this.accumTime > this.stepTime) {
             while(this.accumTime > this.stepTime) {
-                this.update();
+                this.update(this.stepTime);
                 this.accumTime -= this.stepTime;
             }
             this.client.sendClientTick(this.player.entity);
@@ -77,8 +78,8 @@ class GameRenderer {
         this.requestId = requestAnimationFrame(this.tick.bind(this));
     }
 
-    private update(): void {
-        this.player.update();
+    private update(dt: number): void {
+        this.player.update(dt);
     }
     
     private render(): void {
@@ -86,23 +87,27 @@ class GameRenderer {
         
         // Draw all bodies
         this.context.beginPath();
-        this.player.render(this.context);
-        this.entities.forEach((entity, id) => {
-            if(id !== this.client.id) {
-                EntityRenderer.render(this.context, entity);
-            }
-        });
+        this.entities.forEach((entity, id) => EntityRenderer.render(this.context, entity));
         this.context.fill();
 
-        // Draw all UI
+        // Draw all Shields
         this.context.beginPath();
-        this.player.renderUi(this.context);
-        this.entities.forEach((entity, id) => {
-            if(id !== this.client.id) {
-                EntityRenderer.renderUi(this.context, entity);
-            }
-        });
+        this.entities.forEach((entity, id) => EntityRenderer.renderShield(this.context, entity));
         this.context.fill();
+
+        // Draw all Recharges
+        this.context.beginPath();
+        this.entities.forEach((entity, id) => EntityRenderer.renderRecharge(this.context, entity));
+        this.context.stroke();
+
+        // Draw all Recharges
+        this.context.beginPath();
+        EntityRenderer.renderHazard(this.context, this.hazard);
+        this.context.fill();
+
+        // Draw all Usernames
+        this.entities.forEach((entity, id) => EntityRenderer.renderName(this.context, entity));
+
     }
 
 }

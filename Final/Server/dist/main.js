@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const dotenv_1 = require("dotenv");
-dotenv_1.config();
 const LoggerService_1 = tslib_1.__importDefault(require("./services/LoggerService"));
 const MessageService_1 = tslib_1.__importDefault(require("./services/MessageService"));
 const CryptoService_1 = tslib_1.__importDefault(require("./services/CryptoService"));
@@ -10,11 +9,11 @@ const DatabaseService_1 = tslib_1.__importDefault(require("./services/DatabaseSe
 const AmbientContext_1 = tslib_1.__importDefault(require("./services/AmbientContext"));
 const ConnectionService_1 = tslib_1.__importDefault(require("./services/ConnectionService"));
 const GameService_1 = tslib_1.__importDefault(require("./services/GameService"));
+dotenv_1.config();
 let mongodbUri = 'mongodb://localhost:27017';
 if (process.env.MONGO_URI) {
     mongodbUri = process.env.MONGO_URI;
 }
-console.log(`${process.env.MONGO_URI}`);
 const logger = new LoggerService_1.default('Aphelion', 'C:\\Users\\Josh\\Storage\\Logs\\Aphelion', 10, 10 * 1024 * 1024);
 const dbCtx = new DatabaseService_1.default(mongodbUri, 'local', 'accounts');
 const crypto = new CryptoService_1.default(10);

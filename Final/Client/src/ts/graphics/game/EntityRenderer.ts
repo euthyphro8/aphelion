@@ -1,17 +1,46 @@
-import IEntity from '@/ts/interfaces/IEntity';
+
+import IEntity, { EntityConstants } from '@/ts/interfaces/IEntity';
+import IHazard from '@/ts/interfaces/IHazard';
 
 class EntityRenderer {
 
     public static render(context: CanvasRenderingContext2D, entity: IEntity) {
-        context.fillStyle = '#ee2';
-        context.moveTo(entity.x, entity.y);
-        context.rect(entity.x, entity.y, 100, 100);
+        if(entity.shieldTime <= 0) {
+            context.fillStyle = '#ee2';
+            context.moveTo(entity.x - 25, entity.y - 25);
+            context.rect(entity.x - 25, entity.y - 25, 50, 50);
+        }
     }
     
-    public static renderUi(context: CanvasRenderingContext2D, entity: IEntity) {
-        context.fillStyle = '#d22';
-        context.moveTo(entity.x, entity.y + 100);
-        context.rect(entity.x, entity.y + 100, entity.hp, 10);
+    public static renderShield(context: CanvasRenderingContext2D, entity: IEntity) {
+        if(entity.shieldTime > 0) {
+            context.fillStyle = '#48d';
+            context.moveTo(entity.x, entity.y);
+            context.ellipse(entity.x, entity.y, 50, 50, 0, 0, 2 * Math.PI);
+        }
+    }
+
+    public static renderName(context: CanvasRenderingContext2D, entity: IEntity) {
+        context.fillStyle = '#ccc';
+        context.textAlign = 'center';
+        context.font = '16px Montserrat';
+        context.fillText(entity.name, entity.x, entity.y + EntityConstants.size);
+    }
+
+    public static renderRecharge(context: CanvasRenderingContext2D, entity: IEntity) {
+        if(entity.rechargeTime > 0 && entity.shieldTime <= 0) {
+            context.beginPath();
+            context.strokeStyle = '#cccccc';
+            context.lineWidth = 5;
+            context.arc(entity.x, entity.y, 40, 0, 2 * Math.PI * (entity.rechargeTime / EntityConstants.rechargeTime));
+            context.stroke();
+        }
+    }
+
+    public static renderHazard(context: CanvasRenderingContext2D, hazard: IHazard) {
+        context.fillStyle = '#d48';
+        context.moveTo(hazard.x, hazard.y);
+        context.ellipse(hazard.x, hazard.y, hazard.size, hazard.size, 0, 0, 2 * Math.PI);
     }
 }
 

@@ -21,7 +21,7 @@ export default {
     props: ['entry'],
     data() {
         return {
-            gravatar: `https://gravatar.com/avatar/${md5(this.entry.email.toLowerCase())}`
+            gravatar: `https://gravatar.com/avatar/${md5(this.entry.avatar.toLowerCase())}`
         };
     }
 };
@@ -30,10 +30,9 @@ export default {
 <style scoped>
 
     .board-entry {
-        background: #0C8346;
+        /* background: #0C8346; */
         display: flex;
         height: 100px;
-        color: #cccccc;
         font-weight: bolder;
         flex-wrap: nowrap;
         justify-content: space-between;
@@ -54,12 +53,13 @@ export default {
         margin: 0;
         padding: 0;
         padding: 10px;
+        color: #cccccc;
     }
 
     .score {
         padding: 10px;
         width: 100px;
-        /* width: 50%; */
+        color: #cccccc;
     }
 
 </style>

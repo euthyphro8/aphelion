@@ -119,10 +119,9 @@ class DatabaseService {
             await this.connect();
         }
         try {
-            const cursor = await this.collection!.find({});
+            const raw = await this.collection!.find({}).toArray();
             const accounts: IAccountInfo[] = [];
-            while (cursor.hasNext()) {
-                const account = await cursor.next();
+            for (const account of raw) {
                 if (account as IAccountInfo) {
                     accounts.push(account as IAccountInfo);
                 } else {

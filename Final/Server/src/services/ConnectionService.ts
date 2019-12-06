@@ -7,6 +7,7 @@ import io from 'socket.io';
 // Internal Dependencies
 import Context from './AmbientContext';
 import MessageTypes from '../utils/MessageTypes';
+import { eventNames } from 'cluster';
 
 class ConnectionService {
     public ioServer: io.Server;

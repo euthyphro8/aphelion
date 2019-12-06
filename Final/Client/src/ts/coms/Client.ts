@@ -23,7 +23,7 @@ class Client {
             // ca: fs.readFileSync('server-certifcate.pem').toString(),
             // ca: certificate,
         };
-        this.socket = io('/', options);
+        this.socket = io('http://localhost:3000', options);
         this.socket.on('connect', this.onConnected.bind(this));
         this.socket.on(MessageTypes.IdRequest, (callback: (clientId: string) => void) => {
             callback(this.id);

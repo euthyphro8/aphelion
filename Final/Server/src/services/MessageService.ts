@@ -97,15 +97,17 @@ class MessageService {
     private async onLeaderBoardRequest(clientId: string, callback: (entries: any) => void): Promise<void> {
         Context.LoggerProvider.info(`[ MESG SVC ] Got leaderboard request, ${clientId}`);
         const user = this.authenticated.get(clientId);
-        if (user) {
+        if (true) {
             const entries = await Context.DatabaseProvider.getAllAccounts();
             if (entries) {
                 entries.forEach((entry) => delete entry.password);
                 callback(entries);
                 return;
             }
+        } else {
+            Context.LoggerProvider.info(`[ MESG SVC ] Leaderboard request failed ${clientId}, not authed.`);
+            callback(undefined);
         }
-        callback(undefined);
     }
     private async onRoomRequest(clientId: string, callback: (roomId: any) => void): Promise<void> {
         Context.LoggerProvider.info(`[ MESG SVC ] Got room request, ${clientId}`);

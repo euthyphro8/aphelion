@@ -86,7 +86,7 @@ class MessageService {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Got leaderboard request, ${clientId}`);
             const user = this.authenticated.get(clientId);
-            if (user) {
+            if (true) {
                 const entries = yield AmbientContext_1.default.DatabaseProvider.getAllAccounts();
                 if (entries) {
                     entries.forEach((entry) => delete entry.password);
@@ -94,7 +94,10 @@ class MessageService {
                     return;
                 }
             }
-            callback(undefined);
+            else {
+                AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Leaderboard request failed ${clientId}, not authed.`);
+                callback(undefined);
+            }
         });
     }
     onRoomRequest(clientId, callback) {
