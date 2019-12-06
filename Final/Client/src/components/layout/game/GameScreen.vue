@@ -17,10 +17,13 @@ export default {
         }
     },
     mounted() {
-        const ctx = this.$refs['screen'].getContext('2d', { alpha: false });
         window.addEventListener('resize', this.onResize);
-        this.screen = new GameRenderer(ctx, this.$store.state.client);
-        this.screen.start();
+        const client = this.$store.state.client;
+        client.requestAccountInfo().then((user) => {
+            const ctx = this.$refs['screen'].getContext('2d', { alpha: false });
+            this.screen = new GameRenderer(ctx, client, user);    
+            this.screen.start();
+        });
         this.onResize(null);
     },
     beforeDestroy() {

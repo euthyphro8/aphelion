@@ -7,6 +7,7 @@ import uuid from 'uuid';
 import MessageTypes from '@/ts/coms/MessageTypes';
 import IUserInfo from '@/ts/interfaces/ui/IUserInfo';
 import IEntity from '@/ts/interfaces/IEntity';
+import { Z_UNKNOWN } from 'zlib';
 
 class Client {
 
@@ -96,15 +97,16 @@ class Client {
         return promise;
     }
 
-    public subscribeToRoom(callback: (entities: [string, IEntity][]) => void): void {
-        this.requestRoom().then((roomId) => {
+    public subscribeToRoom(callback: (entities: [string, IEntity][]) => void): Promise<string> {
+        return this.requestRoom().then((roomId) => {
             console.log(`[ Client ] Subscribed to room ${roomId}.`);
             this.socket.on(MessageTypes.ServerTick, callback);
+            return roomId
         });
     }
 
-    public unSubscribeToRoom(callback: (entities: [string, IEntity][]) => void): void {
-        this.socket.emit(MessageTypes.LeaveRoomRequest, this.id);
+    public unSubscribeToRoom(username: string, finalScore: number, callback: (entities: [string, IEntity][]) => void): void {
+        this.socket.emit(MessageTypes.LeaveRoomRequest, this.id, username, finalScore);
         this.socket.off(MessageTypes.ServerTick, callback);
     }
 

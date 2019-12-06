@@ -56,7 +56,7 @@ class MessageService {
             this.authenticated.set(clientId, account as IUserInfo);
             callback(true);
         } else {
-            Context.LoggerProvider.info(`[ MESG SVC ] Verification failed, notifying client.`);
+            Context.LoggerProvider.warn(`[ MESG SVC ] Verification failed, notifying client.`);
             callback(false);
         }
     }
@@ -79,7 +79,7 @@ class MessageService {
                 callback(false);
             }
         } else {
-            Context.LoggerProvider.info(`[ MESG SVC ] Registration failed for ${email}.`);
+            Context.LoggerProvider.warn(`[ MESG SVC ] Registration failed for ${email}.`);
             callback(false);
         }
     }
@@ -90,6 +90,7 @@ class MessageService {
         if (user) {
             callback(user as IUserInfo);
         } else {
+            Context.LoggerProvider.warn(`[ MESG SVC ] Room request failed ${clientId}, not authed.`);
             callback(undefined);
         }
     }
@@ -97,7 +98,7 @@ class MessageService {
     private async onLeaderBoardRequest(clientId: string, callback: (entries: any) => void): Promise<void> {
         Context.LoggerProvider.info(`[ MESG SVC ] Got leaderboard request, ${clientId}`);
         const user = this.authenticated.get(clientId);
-        if (true) {
+        if (user) {
             const entries = await Context.DatabaseProvider.getAllAccounts();
             if (entries) {
                 entries.forEach((entry) => delete entry.password);
@@ -105,20 +106,21 @@ class MessageService {
                 return;
             }
         } else {
-            Context.LoggerProvider.info(`[ MESG SVC ] Leaderboard request failed ${clientId}, not authed.`);
+            Context.LoggerProvider.warn(`[ MESG SVC ] Leaderboard request failed ${clientId}, not authed.`);
             callback(undefined);
         }
     }
-    private async onRoomRequest(clientId: string, callback: (roomId: any) => void): Promise<void> {
+    private async onRoomRequest(clientId: string, callback: (roomId: string) => void): Promise<void> {
         Context.LoggerProvider.info(`[ MESG SVC ] Got room request, ${clientId}`);
 
-        // TODO This should use the authed users to avoid null exeptions
-        const roomId = AmbientContext.GameProvider.registerGamer(clientId, this.messengers.get(clientId)!);
-        callback(roomId);
-        // const user = this.authenticated.get(clientId);
-        // if (user) {
-        // }
-        // callback(undefined);
+        const user = this.authenticated.get(clientId);
+        if (user) {
+            const roomId = AmbientContext.GameProvider.registerGamer(clientId, this.messengers.get(clientId)!);
+            callback(roomId);
+        } else {
+            Context.LoggerProvider.warn(`[ MESG SVC ] Room request failed ${clientId}, not authed.`);
+            callback('');
+        }
     }
 }
 

@@ -2,8 +2,9 @@
 import Player from '@/ts/graphics/game/Player';
 import Client from '@/ts/coms/Client';
 import IEntity from '@/ts/interfaces/IEntity';
-import EntityRenderer from '@/ts/graphics/game/EntityRenderer';
+import Renderer from '@/ts/graphics/game/Renderer';
 import IHazard from '@/ts/interfaces/IHazard';
+import IUserInfo from '@/ts/interfaces/ui/IUserInfo';
 
 class GameRenderer {
 
@@ -12,16 +13,18 @@ class GameRenderer {
     private client: Client;
     private player: Player;
     private hazard: IHazard;
+    private score: number;
+    private roomId: string;
 
     private requestId: number;
     private accumTime: number;
     private lastTime: number;
     private stepTime: number;
 
-    constructor(ctx: CanvasRenderingContext2D, client: Client) {
+    constructor(ctx: CanvasRenderingContext2D, client: Client, user: IUserInfo) {
         this.context = ctx;
         this.client = client;
-        this.player = new Player('Name');
+        this.player = new Player(user.username);
         this.entities = new Map<string, IEntity>();
         this.hazard = {
             x: 1920 / 2,
@@ -33,6 +36,8 @@ class GameRenderer {
         this.lastTime = 0.0;
         this.accumTime = 0.0;
         this.stepTime = (1000.0 / 60.0);
+        this.score = 0;
+        this.roomId = '-';
     }
 
     public start(): void {
@@ -48,17 +53,20 @@ class GameRenderer {
     private registerEvents(): void {
         this.player.registerEvents();
         this.requestId = requestAnimationFrame(this.tick.bind(this));
-        this.client.subscribeToRoom(this.onServerTick.bind(this));
+        this.client.subscribeToRoom(this.onServerTick.bind(this)).then((roomId) => {
+            this.roomId = roomId;
+        });
     }
 
     private unRegisterEvents(): void {
-        this.client.unSubscribeToRoom(this.onServerTick.bind(this));
+        this.client.unSubscribeToRoom(this.player.entity.name, Math.floor(this.score), this.onServerTick.bind(this));
         cancelAnimationFrame(this.requestId);
         this.player.unRegisterEvents();
     }
 
     private onServerTick(entities: [string, IEntity][]): void {
         this.entities = new Map<string, IEntity>(entities);
+        this.score += (1 / 30);
     }
 
     private tick(time: number) {
@@ -87,26 +95,28 @@ class GameRenderer {
         
         // Draw all bodies
         this.context.beginPath();
-        this.entities.forEach((entity, id) => EntityRenderer.render(this.context, entity));
+        this.entities.forEach((entity, id) => Renderer.render(this.context, entity));
         this.context.fill();
 
         // Draw all Shields
         this.context.beginPath();
-        this.entities.forEach((entity, id) => EntityRenderer.renderShield(this.context, entity));
+        this.entities.forEach((entity, id) => Renderer.renderShield(this.context, entity));
         this.context.fill();
 
         // Draw all Recharges
         this.context.beginPath();
-        this.entities.forEach((entity, id) => EntityRenderer.renderRecharge(this.context, entity));
+        this.entities.forEach((entity, id) => Renderer.renderRecharge(this.context, entity));
         this.context.stroke();
 
         // Draw all Recharges
         this.context.beginPath();
-        EntityRenderer.renderHazard(this.context, this.hazard);
+        Renderer.renderHazard(this.context, this.hazard);
         this.context.fill();
 
         // Draw all Usernames
-        this.entities.forEach((entity, id) => EntityRenderer.renderName(this.context, entity));
+        this.entities.forEach((entity, id) => Renderer.renderName(this.context, entity));
+
+        Renderer.renderInfo(this.context, this.roomId, Math.floor(this.score));
 
     }
 

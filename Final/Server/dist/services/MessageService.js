@@ -43,7 +43,7 @@ class MessageService {
                 callback(true);
             }
             else {
-                AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Verification failed, notifying client.`);
+                AmbientContext_1.default.LoggerProvider.warn(`[ MESG SVC ] Verification failed, notifying client.`);
                 callback(false);
             }
         });
@@ -67,7 +67,7 @@ class MessageService {
                 }
             }
             else {
-                AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Registration failed for ${email}.`);
+                AmbientContext_1.default.LoggerProvider.warn(`[ MESG SVC ] Registration failed for ${email}.`);
                 callback(false);
             }
         });
@@ -79,6 +79,7 @@ class MessageService {
             callback(user);
         }
         else {
+            AmbientContext_1.default.LoggerProvider.warn(`[ MESG SVC ] Room request failed ${clientId}, not authed.`);
             callback(undefined);
         }
     }
@@ -86,7 +87,7 @@ class MessageService {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Got leaderboard request, ${clientId}`);
             const user = this.authenticated.get(clientId);
-            if (true) {
+            if (user) {
                 const entries = yield AmbientContext_1.default.DatabaseProvider.getAllAccounts();
                 if (entries) {
                     entries.forEach((entry) => delete entry.password);
@@ -95,7 +96,7 @@ class MessageService {
                 }
             }
             else {
-                AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Leaderboard request failed ${clientId}, not authed.`);
+                AmbientContext_1.default.LoggerProvider.warn(`[ MESG SVC ] Leaderboard request failed ${clientId}, not authed.`);
                 callback(undefined);
             }
         });
@@ -103,8 +104,15 @@ class MessageService {
     onRoomRequest(clientId, callback) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             AmbientContext_1.default.LoggerProvider.info(`[ MESG SVC ] Got room request, ${clientId}`);
-            const roomId = AmbientContext_2.default.GameProvider.registerGamer(clientId, this.messengers.get(clientId));
-            callback(roomId);
+            const user = this.authenticated.get(clientId);
+            if (user) {
+                const roomId = AmbientContext_2.default.GameProvider.registerGamer(clientId, this.messengers.get(clientId));
+                callback(roomId);
+            }
+            else {
+                AmbientContext_1.default.LoggerProvider.warn(`[ MESG SVC ] Room request failed ${clientId}, not authed.`);
+                callback('');
+            }
         });
     }
 }

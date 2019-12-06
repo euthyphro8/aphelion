@@ -4,6 +4,8 @@ import IEntity from '@/interfaces/IEntity';
 import MessageTypes from '../utils/MessageTypes';
 import GameRoom from '../utils/GameRoom';
 import AmbientContext from './AmbientContext';
+import IUserInfo from '@/interfaces/IUserInfo';
+import IAccountInfo from '@/interfaces/IAccountInfo';
 
 class GameService {
 
@@ -27,7 +29,7 @@ class GameService {
 
     public registerGamer(clientId: string, gamer: io.Socket): string {
         this.gamers.set(clientId, gamer);
-        gamer.on(MessageTypes.LeaveRoomRequest, this.unregisterGamer.bind(this));
+        gamer.on(MessageTypes.LeaveRoomRequest, this.onLeaveRoomRequest.bind(this));
         // Try to add the client to an existing room
         let roomId = '';
         for (const room of this.rooms) {
@@ -39,7 +41,7 @@ class GameService {
         // Otherwise create a new room and add it to that
         if (!roomId) {
             const server = AmbientContext.ConnectionProvider.ioServer;
-            roomId = `Aphelion${++this.lastRoomNumber}`;
+            roomId = `Aphelion-${++this.lastRoomNumber}`;
             const room = new GameRoom(server, roomId);
             room.addToRoom(clientId, gamer);
             this.rooms.push(room);
@@ -67,6 +69,16 @@ class GameService {
                 this.requestId = null;
             }
         }
+    }
+
+    private onLeaveRoomRequest(clientId: string, username: string, finalScore: number): void {
+        AmbientContext.DatabaseProvider.getAccount(username, false).then((account: IAccountInfo | null) => {
+            if (account) {
+                account.score += finalScore;
+                AmbientContext.DatabaseProvider.updateAccount(account);
+            }
+        });
+        this.unregisterGamer(clientId);
     }
 
     private tick(): void {

@@ -2,7 +2,7 @@
 import IEntity, { EntityConstants } from '@/ts/interfaces/IEntity';
 import IHazard from '@/ts/interfaces/IHazard';
 
-class EntityRenderer {
+class Renderer {
 
     public static render(context: CanvasRenderingContext2D, entity: IEntity) {
         if(entity.shieldTime <= 0) {
@@ -42,6 +42,15 @@ class EntityRenderer {
         context.moveTo(hazard.x, hazard.y);
         context.ellipse(hazard.x, hazard.y, hazard.size, hazard.size, 0, 0, 2 * Math.PI);
     }
+
+    public static renderInfo(context: CanvasRenderingContext2D, roomId:string, score: number) {
+        context.fillStyle = '#ccc';
+        context.textAlign = 'center';
+        context.font = '48px Montserrat';
+        context.fillText(`Room ${roomId}`, 1920 / 2, 64);
+        context.font = '24px Montserrat';
+        context.fillText(`Score ${score}`, 1920 / 2, 96);
+    }
 }
 
-export default EntityRenderer;
+export default Renderer;
