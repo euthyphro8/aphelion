@@ -21,12 +21,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     
     - name: Test Server
-      working-directory: ${{ github.workspace }}/Final/Server
+      working-directory: ${{ github.workspace }}/Server
       run: |
         npm run CiTest
         
     - name: test Client
-      working-directory: ${{ github.workspace }}/Final/Client
+      working-directory: ${{ github.workspace }}/Client
       run: |
         npm run CiTest
       
